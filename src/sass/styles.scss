@@ -1,0 +1,89 @@
+@import './variables';
+@import './mixins';
+@import './grid-view.scss';
+
+%col {
+	padding: 15px;
+}
+
+.pointerCursor {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+.connectionsPanel {
+	background-color: #f8f8f8;
+}
+
+.centerScreenModalPositioner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.centerScreenModalContainer {
+	background-color: white;
+	box-shadow: 0 0 10px -2px;
+}
+
+.modalTopBarTitleContainer {
+	display: inline-block;
+}
+.modalTopBarActionsContainer {
+	float: right;
+	vertical-align: middle;
+}
+.closeIcon {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 4px;
+	padding-right: 4px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.closeButton:hover {
+	background-color: darkred;
+	color: white;
+}
+
+.errorMessageTextDisplay {
+	color: red;
+}
+
+.fadedOption {
+	opacity: 0.33;
+}
+
+.tabsContainer {
+	display: inline-block;
+	background-color: darkslategray;
+	width: 100%;
+}
+
+.tab {
+	float: left;
+	margin-left: 4px;
+	margin-top: 4px;
+}
+.unselectedTabContents {
+	background-color: darkgrey;
+}
+.selectedTabContents {
+	background-color: white;
+}
+
+.keyNameSection {
+	display: inline-block;
+	width: $keyNameSectionWidth;
+}
+.valueSection {
+	display: inline-block;
+	width: $valueSectionWidth;
+}

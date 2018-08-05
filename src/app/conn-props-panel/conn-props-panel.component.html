@@ -1,0 +1,32 @@
+<div>
+	<div>
+		<label>Name: </label>
+		<input [(ngModel)]="name">
+	</div>
+	<div>
+		<label>Host: </label>
+		<input [(ngModel)]="host">
+	</div>
+	<div>
+		<label>Port: </label>
+		<input [(ngModel)]="port">
+	</div>
+	<div>
+		<input type="checkbox" [(ngModel)]="usesPassword">
+		<label>Has Password</label>
+	</div>
+	<div [ngClass]="{'fadedOption': !usesPassword}">
+		<label>Password: </label>
+		<input [disabled]="!usesPassword" [(ngModel)]="password">
+	</div>
+	<div>
+		<div>
+			<span *ngIf="errorMessage" class="errorMessageTextDisplay">
+				Error: {{errorMessage}}
+			</span>
+			<button class="pointerCursor">Test</button>
+			<button class="pointerCursor" (click)="saveConnection()">Save</button>
+			<button class="closeButton pointerCursor" (click)="close()">Cancel</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,6 @@
+<div>
+	<div *ngFor="let key of getKeysOnCurrentPage()">
+		<div class="keyNameSection">{{key.key}}</div>
+		<div class="valueSection">{{key.getCompactValueDisplay()}}</div>
+	</div>
+</div>

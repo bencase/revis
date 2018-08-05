@@ -1,0 +1,22 @@
+<div class="connectionsPanel">
+	<div>
+		<span>Connections</span>
+		<span>
+			<button class="cursorPointer" (click)="openConnPropertiesPanelForAdding()">
+				<i class="fas fa-plus"></i>
+			</button>
+		</span>
+		<span *ngIf="propsModalIsOpen">
+			<centered-modal [close]="closeConnPropsModal" [title]="'Add Connection'">
+				<conn-props-panel [close]="closeConnPropsModal" (connEmitter)="saveConn($event)"></conn-props-panel>
+			</centered-modal>
+		</span>
+	</div>
+	<div *ngIf="connections">
+		<div *ngFor="let connection of connections">
+			<div (dblclick)="selectConn(connection)">
+				{{connection.getDisplayName()}}
+			</div>
+		</div>
+	</div>
+</div>

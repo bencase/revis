@@ -1,0 +1,15 @@
+<div class="tabsContainer" *ngIf="hasTabs()">
+	<div class="tab" *ngFor="let tab of tabs">
+		<div [ngClass]="{selectedTabContents: tab === selectedTab, unselectedTabContents: tab !== selectedTab}" (click)="selectTab(tab)">
+			{{tab.name}}
+		</div>
+	</div>
+</div>
+<div *ngFor="let tab of tabs">
+	<div [class.hidden]="tab !== selectedTab">
+		<redis-content [props]="tab.tabProps" [connName]="tab.name"></redis-content>
+	</div>
+</div>
+<div *ngIf="!selectedTab">
+	<ng-content></ng-content>
+</div>
