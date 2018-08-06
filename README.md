@@ -1,2 +1,2 @@
-# revis
+# ReVis
 an alternate redis client
