@@ -20,6 +20,7 @@ export class RedisContentComponent implements OnInit {
 	@Input() props: Object;
 
 	currentPage = 1;
+	pattern: string;
 
 	keys: Key[] = [];
 
@@ -83,4 +84,17 @@ export class RedisContentComponent implements OnInit {
 		return this.keys.slice(startIndex, endIndex);
 	}
 
+	getTypeTextColor(key: Key): string {
+		if (!key.type) {
+			return "blue";
+		}
+		switch (key.type) {
+		case "" : return "blue";
+		case KeyType.List : return "purple";
+		case KeyType.Set : return "#ff8000"; // redish-orange
+		case KeyType.Zset : return "green";
+		case KeyType.Hash : return "red";
+		default : return "maroon";
+		}
+	}
 }
