@@ -87,3 +87,14 @@
 	display: inline-block;
 	width: $valueSectionWidth;
 }
+
+.keyType {
+	display: inline-block;
+	opacity: 0.67;
+	font-size: 0.8em;
+	width: $keyTypeWidth;
+}
+.keyName {
+	display: inline-block;
+	width: $keyNameWidth;
+}

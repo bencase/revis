@@ -1,6 +1,16 @@
 <div>
+	<input [(ngModel)]="pattern">
+</div>
+<div>
 	<div *ngFor="let key of getKeysOnCurrentPage()">
-		<div class="keyNameSection">{{key.key}}</div>
+		<div class="keyNameSection">
+			<div class="keyType">
+				<label class="keyTypeText" [style.color]="getTypeTextColor(key)">
+					{{key.getTypeForDisplay()}}
+				</label>
+			</div>
+			<div class="keyName">{{key.key}}</div>
+		</div>
 		<div class="valueSection">{{key.getCompactValueDisplay()}}</div>
 	</div>
 </div>

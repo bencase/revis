@@ -29,6 +29,13 @@ export class Key {
 		default : return this.val.toString();
 		}
 	}
+
+	public getTypeForDisplay(): string {
+		if (!this.type) {
+			return "STRING";
+		}
+		return this.type.toUpperCase();
+	}
 }
 export class ZsetVal {
 	public zval: string;
