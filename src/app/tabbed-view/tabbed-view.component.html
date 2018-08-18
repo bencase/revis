@@ -7,7 +7,7 @@
 </div>
 <div *ngFor="let tab of tabs">
 	<div [class.hidden]="tab !== selectedTab">
-		<redis-content [props]="tab.tabProps" [connName]="tab.name"></redis-content>
+		<redis-content [props]="tab.tabProps"></redis-content>
 	</div>
 </div>
 <div *ngIf="!selectedTab">

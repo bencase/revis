@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { TabProps } from '../objects';
 import { CountHolder } from '../util';
 
 @Component({
@@ -18,8 +19,9 @@ export class TabbedViewComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	public addTab(tabName: string, tabProps: Object): void {
+	public addTab(tabName: string, tabProps: TabProps): void {
 		let tab: Tab = null;
+		tabProps.connName = tabName;
 		if (!this.counts.hasValue(tabName)) {
 			tab = new Tab(tabName, tabProps);
 			this.tabs.push(tab);
@@ -49,10 +51,10 @@ export class TabbedViewComponent implements OnInit {
 }
 
 class Tab {
-	constructor(name: string, tabProps: Object) {
+	constructor(name: string, tabProps: TabProps) {
 		this.name = name;
 		this.tabProps = tabProps;
 	}
 	name: string;
-	tabProps: Object;
+	tabProps: TabProps;
 }
