@@ -18,15 +18,29 @@ export class Key {
 	public key: string;
 	public val: string|string[]|ZsetVal[]|HashVal[];
 	public type: string;
+	public compactDisplayStr: string;
 
 	public getCompactValueDisplay(): string {
+		if (this.compactDisplayStr) {
+			return this.compactDisplayStr;
+		}
+		this.resetCompactValueDisplay();
+		return this.compactDisplayStr;
+	}
+	public resetCompactValueDisplay(): void {
 		switch (this.type) {
-		case "" : return this.val as string;
-		case KeyType.List : return getListOrSetAsString(this.val as string[]);
-		case KeyType.Set : return getListOrSetAsString(this.val as string[]);
-		case KeyType.Zset : return getZsetAsString(this.val as ZsetVal[]);
-		case KeyType.Hash : return getHashAsString(this.val as HashVal[]);
-		default : return this.val.toString();
+		case "" : this.compactDisplayStr = this.val as string;
+			break;
+		case KeyType.List : this.compactDisplayStr = getListOrSetAsString(this.val as string[]);
+			break;
+		case KeyType.Set : this.compactDisplayStr = getListOrSetAsString(this.val as string[]);
+			break;
+		case KeyType.Zset : this.compactDisplayStr = getZsetAsString(this.val as ZsetVal[]);
+			break;
+		case KeyType.Hash : this.compactDisplayStr = getHashAsString(this.val as HashVal[]);
+			break;
+		default : this.compactDisplayStr = this.val.toString();
+			break;
 		}
 	}
 

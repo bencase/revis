@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { TabProps } from '../objects';
 import { TabbedViewComponent } from '../tabbed-view/tabbed-view.component';
 
 @Component({
@@ -19,7 +20,7 @@ export class MainPanelComponent implements OnInit {
 
 	selectedConnChanged(newSelectedConn: string): void {
 		// TODO create a tab properties type
-		let tabProps: Object = {};
+		let tabProps = new TabProps();
 		this.tabbedView.addTab(newSelectedConn, tabProps);
 	}
 

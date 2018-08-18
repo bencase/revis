@@ -14,6 +14,11 @@
 	display: none;
 }
 
+.liteInput {
+	border: none;
+	background-color: transparent;
+}
+
 .connectionsPanel {
 	background-color: #f8f8f8;
 }
@@ -77,6 +82,14 @@
 }
 .selectedTabContents {
 	background-color: white;
+}
+
+.patternInput {
+}
+
+.pagesNavigator {
+	display: inline-block;
+	float: right;
 }
 
 .keyNameSection {

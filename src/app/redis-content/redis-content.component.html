@@ -1,5 +1,24 @@
 <div>
-	<input [(ngModel)]="pattern">
+	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
+	<button (click)="findKeys()">Find</button>
+	<div class="pagesNavigator">
+		<label (click)="navigateToFirstPage()" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
+			<i class="fas fa-angle-double-left"></i>
+		</label>
+		<label (click)="navigateToPreviousPage()" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
+			<i class="fas fa-angle-left"></i>
+		</label>
+		<input size="3" [(ngModel)]="pageInputNumber" (keydown)="pageSelectInputKeydown($event)">
+		<label (click)="navigateToNextPage()" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
+			<i class="fas fa-angle-right"></i>
+		</label>
+		<label (click)="navigateToLastPage()" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
+			<i class="fas fa-angle-double-right"></i>
+		</label>
+		<span>
+			{{keys.length}} keys
+		</span>
+	</div>
 </div>
 <div>
 	<div *ngFor="let key of getKeysOnCurrentPage()">
