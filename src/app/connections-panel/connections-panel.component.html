@@ -1,8 +1,8 @@
 <div class="connectionsPanel">
 	<div>
-		<span>Connections</span>
+		<span class="title">Connections</span>
 		<span>
-			<button class="cursorPointer" (click)="openConnPropertiesPanelForAdding()">
+			<button class="singleIconButton highlightButton pointerCursor" (click)="openConnPropertiesPanelForAdding()">
 				<i class="fas fa-plus"></i>
 			</button>
 		</span>
@@ -14,7 +14,7 @@
 	</div>
 	<div *ngIf="connections">
 		<div *ngFor="let connection of connections">
-			<div (dblclick)="selectConn(connection)">
+			<div class="pointerCursor" (dblclick)="selectConn(connection)">
 				{{connection.getDisplayName()}}
 			</div>
 		</div>

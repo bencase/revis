@@ -2,6 +2,25 @@
 @import './mixins';
 @import './grid-view.scss';
 
+@font-face {
+	font-family: Lato;
+	src: url('/assets/fonts/Lato/Lato-Regular.ttf');
+}
+
+@font-face {
+	font-family: Roboto;
+	src: url('/assets/fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'Roboto Condensed';
+	src: url('/assets/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+}
+
+* {
+	font-family: Lato;
+}
+
 %col {
 	padding: 15px;
 }
@@ -14,25 +33,19 @@
 	display: none;
 }
 
+.clearfix::after {
+	content: " ";
+	display: block;
+	height: 0;
+	clear: both;
+}
+
 .liteInput {
-	border: none;
+	font-size: 0.9em;
+	border-top: none;
+	border-left: none;
+	border-right: none;
 	background-color: transparent;
-}
-
-.connectionsPanel {
-	background-color: #f8f8f8;
-}
-
-.centerScreenModalPositioner {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.centerScreenModalContainer {
-	background-color: white;
-	box-shadow: 0 0 10px -2px;
 }
 
 .modalTopBarTitleContainer {
@@ -42,7 +55,8 @@
 	float: right;
 	vertical-align: middle;
 }
-.closeIcon {
+.singleIconButton {
+	font-size: 1.1em;
 	padding-top: 1px;
 	padding-bottom: 1px;
 	padding-left: 4px;
@@ -53,45 +67,45 @@
 	margin-right: 4px;
 }
 
-.closeButton:hover {
-	background-color: darkred;
+button {
+	border: none;
+	background-color: transparent;
+	text-transform: uppercase;
+	font-size: 0.9em;
+	font-family: Roboto;
+}
+
+.textButton {
+	padding-top: 6px;
+	padding-bottom: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.highlightButton:hover {
+	background-color: rgb($appBlueR, $appBlueG, $appBlueB);
+	color: white;
+}
+.warnButton:hover {
+	background-color: red;
 	color: white;
 }
 
 .errorMessageTextDisplay {
 	color: red;
+	background-color: rgb(255, 231, 231);
 }
 
 .fadedOption {
 	opacity: 0.33;
 }
 
-.tabsContainer {
-	display: inline-block;
-	background-color: darkslategray;
-	width: 100%;
-}
-
-.tab {
-	float: left;
-	margin-left: 4px;
-	margin-top: 4px;
-}
-.unselectedTabContents {
-	background-color: darkgrey;
-}
-.selectedTabContents {
-	background-color: white;
-}
-
 .patternInput {
 }
 
-.pagesNavigator {
-	display: inline-block;
-	float: right;
+.keyLine {
+	padding-top: 0.15em;
+	padding-bottom: 0.15em;
 }
-
 .keyNameSection {
 	display: inline-block;
 	width: $keyNameSectionWidth;

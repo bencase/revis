@@ -5,7 +5,8 @@ import { CountHolder } from '../util';
 
 @Component({
   selector: 'tabbed-view',
-  templateUrl: './tabbed-view.component.html'
+  templateUrl: './tabbed-view.component.html',
+  styleUrls: ['./tabbed-view.component.scss']
 })
 export class TabbedViewComponent implements OnInit {
 

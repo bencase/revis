@@ -1,13 +1,14 @@
+<div id="pageMask"></div>
 <div class="centerScreenModalPositioner">
-	<div class="centerScreenModalContainer">
+	<div class="centerScreenModalContainer" (clickOutside)="close()" [delayClickOutsideInit]="true">
 		<div>
 			<div class="modalTopBarTitleContainer">
 				<h3>{{title}}</h3>
 			</div>
 			<div class="modalTopBarActionsContainer">
-				<div class="closeIcon closeButton pointerCursor" (click)="close()">
+				<button class="singleIconButton warnButton pointerCursor" (click)="close()">
 					<i class="fas fa-times"></i>
-				</div>
+				</button>
 			</div>
 		</div>
 		<ng-content></ng-content>

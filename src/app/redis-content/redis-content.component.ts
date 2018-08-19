@@ -11,7 +11,8 @@ import { KeyType } from '../config/config';
 
 @Component({
   selector: 'redis-content',
-  templateUrl: './redis-content.component.html'
+  templateUrl: './redis-content.component.html',
+  styleUrls: ['./redis-content.component.scss']
 })
 export class RedisContentComponent implements OnInit {
 

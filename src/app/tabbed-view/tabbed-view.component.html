@@ -1,7 +1,10 @@
 <div class="tabsContainer" *ngIf="hasTabs()">
-	<div class="tab" *ngFor="let tab of tabs">
-		<div [ngClass]="{selectedTabContents: tab === selectedTab, unselectedTabContents: tab !== selectedTab}" (click)="selectTab(tab)">
-			{{tab.name}}
+	<div class="tab" *ngFor="let tab of tabs; let i = index">
+		<div class="tabSeparator" *ngIf="i !== 0">&#8203;</div>
+		<div class="tabTitleContainer">
+			<div class="tabTitle pointerCursor" [ngClass]="{selectedTabContents: tab === selectedTab, unselectedTabContents: tab !== selectedTab}" (click)="selectTab(tab)">
+				{{tab.name}}
+			</div>
 		</div>
 	</div>
 </div>

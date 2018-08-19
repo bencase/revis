@@ -4,3 +4,7 @@ $valueSectionWidth: 100% - $keyNameSectionWidth;
 $hundredPercent: 100%;
 $keyTypeWidth: 6em;
 $keyNameWidth: calc(#{$hundredPercent} - #{$keyTypeWidth});
+
+$appBlueR: 44;
+$appBlueG: 178;
+$appBlueB: 255;

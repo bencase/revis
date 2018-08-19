@@ -1,4 +1,4 @@
-<div>
+<div class="scanToolbar">
 	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
 	<button (click)="findKeys()">Find</button>
 	<div class="pagesNavigator">
@@ -21,7 +21,7 @@
 	</div>
 </div>
 <div>
-	<div *ngFor="let key of getKeysOnCurrentPage()">
+	<div class="keyLine" *ngFor="let key of getKeysOnCurrentPage()">
 		<div class="keyNameSection">
 			<div class="keyType">
 				<label class="keyTypeText" [style.color]="getTypeTextColor(key)">

@@ -7,7 +7,8 @@ import { handleResponse } from '../util';
 
 @Component({
   selector: 'connections-panel',
-  templateUrl: './connections-panel.component.html'
+  templateUrl: './connections-panel.component.html',
+  styleUrls: ['./connections-panel.component.scss']
 })
 export class ConnectionsPanelComponent implements OnInit {
 
@@ -35,7 +36,9 @@ export class ConnectionsPanelComponent implements OnInit {
 		this.propsModalIsOpen = true;
 	}
 	closeConnPropsModal = () => {
-		this.propsModalIsOpen = false;
+		if (this.propsModalIsOpen) {
+			this.propsModalIsOpen = false;
+		}
 	}
 	
 	saveConn(conn: Connection): void {
