@@ -1,5 +1,11 @@
 @import '../../sass/variables';
 
+.outerContainer {
+	white-space: nowrap;
+	overflow-x: scroll;
+	margin-bottom: 8px;
+}
+
 .tabsContainer {
 	display: inline-block;
 	width: 100%;
@@ -7,6 +13,12 @@
 	margin-bottom: 8px;
 }
 
+.individualTabContainer {
+	display: inline-block;
+	vertical-align: top;
+	white-space: normal;
+	height: 100%;
+}
 .tab {
 	float: left;
 	margin-left: 4px;

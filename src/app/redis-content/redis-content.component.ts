@@ -34,7 +34,6 @@ export class RedisContentComponent implements OnInit {
 	}
 
 	inputKeydown(event): void {
-		console.log("bleh");
 		// If enter is pressed
 		if (event.keyCode === 13) {
 			this.findKeys();

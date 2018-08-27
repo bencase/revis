@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Connection } from '../connection';
 import { ConnectionsResponse, ErrorResponse } from '../dtos/responses';
 import { RedisCmdService } from '../services/redis-cmd.service';
-import { handleResponse } from '../util';
+import { CountHolder, handleResponse } from '../util';
 
 @Component({
   selector: 'connections-panel',
@@ -18,6 +18,9 @@ export class ConnectionsPanelComponent implements OnInit {
 
 	propsModalIsOpen: boolean;
 
+	private clickCounter: CountHolder = new CountHolder();
+	private timeoutHolder = {};
+
 	constructor(private redisCmdService : RedisCmdService) { }
 
 	ngOnInit() {
@@ -29,6 +32,30 @@ export class ConnectionsPanelComponent implements OnInit {
 			}, (errResp: ErrorResponse) => {
 				console.log("Error getting connections list: " + errResp.message);
 			});
+	}
+
+	/*
+	Note: this method is used instead of Angular's dblclick feature because that
+	feature is not responsive if you click fast enough.
+	*/
+	onConnDblClick(conn: Connection): void {
+		let connName = conn.getDisplayName();
+		this.clickCounter.increment(connName);
+		if (this.clickCounter.getCount(connName) < 2) {
+			let timeout = setTimeout(() => {
+				this.clickCounter.reset(connName);
+				delete this.timeoutHolder[connName];
+			}, 400);
+			this.timeoutHolder[connName] = timeout;
+		} else {
+			let timeout = this.timeoutHolder[connName];
+			if (timeout) {
+				clearTimeout(timeout);
+				delete this.timeoutHolder[connName];
+			}
+			this.clickCounter.reset(connName);
+			this.selectConn(conn);
+		}
 	}
 
 	openConnPropertiesPanelForAdding(): void {

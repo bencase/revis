@@ -1,3 +1,55 @@
+@import '../../sass/variables';
+
+.titleContainer {
+	margin-bottom: 0.5em;
+}
+
 .title {
 	font-size: 1.5em;
+}
+
+.addConnButton {
+	margin-left: 0.5em;
+}
+
+.connectionRow {
+	display: table;
+	height: 2.5em;
+	padding-top: 0.15em;
+	padding-bottom: 0.15em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	width: 100%;
+}
+
+.connectionRow:hover {
+	//background-color: rgba($appBlueR, $appBlueB, $appBlueG, 0.1);
+	background-color: rgba(0, 0, 0, 0.02);
+}
+
+.connTextOuter {
+	display: inline-block;
+	height: 100%;
+}
+.connVAlignOuter {
+	display: table;
+	height: 100%;
+}
+.connVAlignInner {
+	display: table-cell;
+	vertical-align: middle;
+}
+.connActionsButtonContainer {
+	float: right;
+	height: 100%;
+}
+.connActionsButton {
+	visibility: hidden;
+	opacity: 0.5;
+}
+.connectionRow:hover .connActionsButton {
+	visibility: visible;
+}
+.connActionsButton:hover {
+	opacity: 1;
 }

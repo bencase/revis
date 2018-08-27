@@ -1,8 +1,8 @@
 <div class="connectionsPanel">
-	<div>
-		<span class="title">Connections</span>
+	<div class="titleContainer">
+		<span class="title unselectable">Connections</span>
 		<span>
-			<button class="singleIconButton highlightButton pointerCursor" (click)="openConnPropertiesPanelForAdding()">
+			<button class="addConnButton singleIconButton plusButton highlightButton pointerCursor" (click)="openConnPropertiesPanelForAdding()">
 				<i class="fas fa-plus"></i>
 			</button>
 		</span>
@@ -13,9 +13,27 @@
 		</span>
 	</div>
 	<div *ngIf="connections">
-		<div *ngFor="let connection of connections">
-			<div class="pointerCursor" (dblclick)="selectConn(connection)">
-				{{connection.getDisplayName()}}
+		<div class="pointerCursor unselectable connectionRow" *ngFor="let connection of connections" (click)="onConnDblClick(connection)">
+			<div class="connTextOuter">
+				<div class="connVAlignOuter">
+					<div class="connVAlignInner">
+						{{connection.getDisplayName()}}
+					</div>
+				</div>
+			</div>
+			<div class="connActionsButtonContainer">
+				<div class="connVAlignOuter">
+					<div class="connVAlignInner">
+						<span>
+							<button class="connActionsButton singleIconButton cogButton highlightButton pointerCursor">
+								<i class="fas fa-cog"></i>
+							</button>
+							<button class="connActionsButton singleIconButton timesButton warnButton pointerCursor">
+								<i class="fas fa-times"></i>
+							</button>
+						</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

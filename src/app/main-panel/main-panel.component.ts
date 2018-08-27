@@ -5,7 +5,8 @@ import { TabbedViewComponent } from '../tabbed-view/tabbed-view.component';
 
 @Component({
   selector: 'main-panel',
-  templateUrl: './main-panel.component.html'
+  templateUrl: './main-panel.component.html',
+  styleUrls: ["main-panel.component.scss"]
 })
 export class MainPanelComponent implements OnInit {
 

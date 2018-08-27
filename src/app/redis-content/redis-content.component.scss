@@ -1,3 +1,5 @@
+@import '../../sass/variables';
+
 .scanToolbar {
 	padding-bottom: 0.3em;
 }
@@ -5,4 +7,36 @@
 .pagesNavigator {
 	display: inline-block;
 	float: right;
+}
+
+.keysContainer {
+	overflow-y: scroll;
+}
+
+.keyLine {
+	padding-top: 0.15em;
+	padding-bottom: 0.15em;
+}
+.keyNameSection {
+	display: inline-block;
+	width: $keyNameSectionWidth;
+}
+.valueSection {
+	display: inline-block;
+	width: $valueSectionWidth;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.keyType {
+	display: inline-block;
+	opacity: 0.67;
+	font-size: 0.8em;
+	width: $keyTypeWidth;
+}
+.keyName {
+	display: inline-block;
+	width: $keyNameWidth;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }

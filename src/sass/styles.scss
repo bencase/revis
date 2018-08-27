@@ -17,12 +17,42 @@
 	src: url('/assets/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf');
 }
 
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 * {
 	font-family: Lato;
 }
 
 %col {
 	padding: 15px;
+}
+
+*::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+	background-color: transparent;
+}
+*::-webkit-scrollbar:hover {
+	background-color: rgba($appBlueR, $appBlueG, $appBlueB, 0.08);
+}
+*::-webkit-scrollbar-thumb {
+	border-radius: 6px;
+	background-color: $appNavy;
+}
+.scrollbarThin::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+.scrollbarThin::-webkit-scrollbar-thumb {
+	border-radius: 3px;
+}
+
+.unselectable {
+	user-select: none;
 }
 
 .pointerCursor {
@@ -56,15 +86,16 @@
 	vertical-align: middle;
 }
 .singleIconButton {
-	font-size: 1.1em;
-	padding-top: 1px;
-	padding-bottom: 1px;
-	padding-left: 4px;
-	padding-right: 4px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-left: 4px;
-	margin-right: 4px;
+	font-size: $singleIconButtonFontSize;
+}
+.plusButton {
+	@include plusButtonPadding();
+}
+.cogButton {
+	@include cogButtonPadding();
+}
+.timesButton {
+	@include timesButtonPadding();
 }
 
 button {
@@ -73,6 +104,7 @@ button {
 	text-transform: uppercase;
 	font-size: 0.9em;
 	font-family: Roboto;
+	border-radius: 0.25em;
 }
 
 .textButton {
@@ -100,28 +132,4 @@ button {
 }
 
 .patternInput {
-}
-
-.keyLine {
-	padding-top: 0.15em;
-	padding-bottom: 0.15em;
-}
-.keyNameSection {
-	display: inline-block;
-	width: $keyNameSectionWidth;
-}
-.valueSection {
-	display: inline-block;
-	width: $valueSectionWidth;
-}
-
-.keyType {
-	display: inline-block;
-	opacity: 0.67;
-	font-size: 0.8em;
-	width: $keyTypeWidth;
-}
-.keyName {
-	display: inline-block;
-	width: $keyNameWidth;
 }

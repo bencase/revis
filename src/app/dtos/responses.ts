@@ -90,7 +90,6 @@ function getZsetAsString(zset: ZsetVal[]): string {
 		if (!isFirstItem) {
 			builderArray.push(", ");
 		}
-		console.log(JSON.stringify(zsetVal));
 		builderArray.push(zsetVal.zval);
 		builderArray.push(": ");
 		builderArray.push(zsetVal.score.toString());

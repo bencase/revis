@@ -5,6 +5,13 @@ $hundredPercent: 100%;
 $keyTypeWidth: 6em;
 $keyNameWidth: calc(#{$hundredPercent} - #{$keyTypeWidth});
 
+$singleIconButtonHeight: 1.5em;
+$singleIconButtonFontSize: 1.1em;
+$singleIconButtonHeightMinusFont: $singleIconButtonHeight - $singleIconButtonFontSize;
+
 $appBlueR: 44;
 $appBlueG: 178;
 $appBlueB: 255;
+$appBlue: rgb(44, 178, 255);
+
+$appNavy: rgb(20, 81, 116);
