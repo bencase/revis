@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Connection } from '../connection';
-import { ConnectionsResponse, ErrorResponse } from '../dtos/responses';
+import { ConnectionsResponse, ErrorResponse, HttpResultContainer } from '../dtos/responses';
 import { RedisCmdService } from '../services/redis-cmd.service';
 import { CountHolder, handleResponse } from '../util';
 
@@ -17,6 +17,9 @@ export class ConnectionsPanelComponent implements OnInit {
 	connections: Connection[] = [];
 
 	propsModalIsOpen: boolean;
+
+	connOpenedForEditing: Connection;
+	connForWhichRemovalPending: Connection;
 
 	private clickCounter: CountHolder = new CountHolder();
 	private timeoutHolder = {};
@@ -63,13 +66,57 @@ export class ConnectionsPanelComponent implements OnInit {
 		this.propsModalIsOpen = true;
 	}
 	closeConnPropsModal = () => {
-		if (this.propsModalIsOpen) {
-			this.propsModalIsOpen = false;
-		}
+		this.propsModalIsOpen = false;
+		this.connOpenedForEditing = null;
 	}
-	
+	setConnAsOpenForEditing(conn: Connection): void {
+		this.connOpenedForEditing = conn;
+	}
+
 	saveConn(conn: Connection): void {
 		this.connections.push(conn);
+	}
+	
+	updateConn(conn: Connection): void {
+		let indexToReplace: number;
+		let foundConnection = false;
+		for (let i = 0; i < this.connections.length; i++) {
+			let oldConn = this.connections[i];
+			if (oldConn === this.connOpenedForEditing) {
+				foundConnection = true;
+				indexToReplace = i;
+				break;
+			}
+		}
+		if (foundConnection) {
+			this.connections[indexToReplace] = conn;
+		} else {
+			console.log("Could not find connection to replace");
+		}
+	}
+	connUsesPassword(conn: Connection): boolean {
+		if (conn.password) {
+			return true;
+		}
+		return false;
+	}
+
+	openRemoveConnModal(conn: Connection): void {
+		this.connForWhichRemovalPending = conn;
+	}
+	closeRemoveConnModal = () => {
+		this.connForWhichRemovalPending = null;
+	}
+	removeConn(i: number): void {
+		let conn = this.connections[i];
+		handleResponse<HttpResultContainer>(this.redisCmdService.removeConnection(conn.getDisplayName()),
+			(resp: HttpResultContainer) => {
+				this.connections.splice(i, 1);
+				this.closeRemoveConnModal();
+			}, (errResp: ErrorResponse) => {
+				console.log("Error removing connection " + conn.getDisplayName() + ": " + errResp.message);
+				this.closeRemoveConnModal();
+			});
 	}
 
 	selectConn(conn: Connection): void {

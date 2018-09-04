@@ -2,12 +2,13 @@ $keyNameSectionWidth: 50%;
 $valueSectionWidth: 100% - $keyNameSectionWidth;
 
 $hundredPercent: 100%;
+$keyTypeMarginLeft: 0.75em;
 $keyTypeWidth: 6em;
-$keyNameWidth: calc(#{$hundredPercent} - #{$keyTypeWidth});
+$keyNameWidth: calc(#{$hundredPercent} - (#{$keyTypeWidth} + #{$keyTypeMarginLeft}));
 
 $singleIconButtonHeight: 1.5em;
 $singleIconButtonFontSize: 1.1em;
-$singleIconButtonHeightMinusFont: $singleIconButtonHeight - $singleIconButtonFontSize;
+$singleIconButtonRatioOfHeightToFontSize: $singleIconButtonHeight / $singleIconButtonFontSize;
 
 $appBlueR: 44;
 $appBlueG: 178;
@@ -15,3 +16,13 @@ $appBlueB: 255;
 $appBlue: rgb(44, 178, 255);
 
 $appNavy: rgb(20, 81, 116);
+
+$scrollbarWidth: 12px;
+$scrollbarThinWidth: 6px;
+
+// Variables that are needed to determine the height of the panel containing the redis keys
+$tabsContainerHeight: 2.5em;
+$outerContainerMarginBottom: 8px;
+$tabsContainerScrollbarHeight: $scrollbarThinWidth;
+$scanToolbarHeight: 2em;
+$keysContainerHeight: calc(100% - (#{$tabsContainerHeight} + #{$outerContainerMarginBottom} + #{$tabsContainerScrollbarHeight} + #{$scanToolbarHeight}));

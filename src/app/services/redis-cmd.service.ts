@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { KeysRequest } from '../dtos/requests';
+import { KeysRequest, RemoveConnectionRequest } from '../dtos/requests';
 import { HttpResultContainer, KeysResponse } from '../dtos/responses';
 import { Connection, ConnectionsContainer } from '../connection';
 
@@ -37,6 +37,15 @@ export class RedisCmdService {
 		let upsertReq = new ConnectionsContainer();
 		upsertReq.connections = connections;
 		return this.httpClient.post<HttpResultContainer>(this.HOSTNAME + this.REDIS_SERVICE + "/connections", upsertReq, {observe: "response"})
+			.pipe(catchError(this.handleError));
+	}
+
+	public removeConnection(connName: string): Observable<HttpResponse<HttpResultContainer>> {
+		let removeConnReq = new RemoveConnectionRequest();
+		removeConnReq.connectionNames = [connName];
+		// Note: the below method is used instead of HttpClient.delete since this allows for both a body and observe: "response"
+		return this.httpClient.request<HttpResultContainer>("DELETE", this.HOSTNAME + this.REDIS_SERVICE + "/connections",
+				{observe: "response", body: removeConnReq})
 			.pipe(catchError(this.handleError));
 	}
 

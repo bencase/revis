@@ -1,7 +1,7 @@
 @import '../../sass/variables';
 
 .scanToolbar {
-	padding-bottom: 0.3em;
+	height: $scanToolbarHeight;
 }
 
 .pagesNavigator {
@@ -10,6 +10,7 @@
 }
 
 .keysContainer {
+	height: $keysContainerHeight;
 	overflow-y: scroll;
 }
 
@@ -17,15 +18,17 @@
 	padding-top: 0.15em;
 	padding-bottom: 0.15em;
 }
+.keyLine:hover {
+	background-color: rgba($appBlueR, $appBlueG, $appBlueB, 0.1);
+}
 .keyNameSection {
 	display: inline-block;
 	width: $keyNameSectionWidth;
+	vertical-align: top;
 }
 .valueSection {
 	display: inline-block;
 	width: $valueSectionWidth;
-	white-space: nowrap;
-	text-overflow: ellipsis;
 }
 
 .keyType {
@@ -33,10 +36,45 @@
 	opacity: 0.67;
 	font-size: 0.8em;
 	width: $keyTypeWidth;
+	margin-left: $keyTypeMarginLeft;
+	margin-top: 0.3em;
+	vertical-align: top;
 }
 .keyName {
 	display: inline-block;
 	width: $keyNameWidth;
-	white-space: nowrap;
+	overflow: hidden;
+}
+
+.valueButtonContainer {
+	width: 1.5em;
+	float: left;
+}
+.valueText {
+	width: auto;
+	overflow: hidden;
+}
+
+.vCenterTextContent {
+	display: table-cell;
+	vertical-align: middle;
+}
+.ellipsisOverflow {
 	text-overflow: ellipsis;
+}
+.noWrap {
+	white-space: nowrap;
+}
+.wrap {
+	word-break: break-all;
+}
+
+.tableFirstCell {
+	vertical-align: top;
+}
+.tableRowHighlight:hover {
+	background-color: rgba(0, 0, 0, 0.03);
+}
+.tableCellMargin {
+	margin-right: 10px;
 }

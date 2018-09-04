@@ -10,7 +10,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "electron .",
-    "electron-build": "ng build --prod && electron ."
+	"electron-build": "ng build --prod && electron .",
+	"elecpkg-linux": "electron-packager . --overwrite --platform=linux --ignore=\"node_modules\"",
+	"elecpkg-win": "electron-packager . --overwrite --platform=win32 --ignore=\"node_modules\"",
+	"elecpkg-mac": "electron-packager . --overwrite --platform=darwin --ignore=\"node_modules\""
   },
   "private": true,
   "dependencies": {

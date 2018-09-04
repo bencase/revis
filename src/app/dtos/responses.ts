@@ -20,6 +20,8 @@ export class Key {
 	public type: string;
 	public compactDisplayStr: string;
 
+	public isOpen: boolean;
+
 	public getCompactValueDisplay(): string {
 		if (this.compactDisplayStr) {
 			return this.compactDisplayStr;

@@ -27,7 +27,7 @@ export class TabbedViewComponent implements OnInit {
 
 	ngAfterViewInit() {
 		this.hScrollElem.nativeElement.addEventListener("mousewheel", (e) => {
-			if (e.wheelDelta < 0) {
+			if (e.wheelDelta > 0) {
 				this.hScrollElem.nativeElement.scrollLeft -= this.scrollAmount;
 				console.log("right");
 			} else {
@@ -68,6 +68,19 @@ export class TabbedViewComponent implements OnInit {
 
 	selectTab(tab: Tab): void {
 		this.selectedTab = tab;
+	}
+
+	closeTab(index: number): void {
+		// If this is the currently selected tab, find another tab to be selected
+		if (index > 0) {
+			this.selectedTab = this.tabs[index - 1];
+		} else if (this.tabs.length > index + 1) {
+			this.selectedTab = this.tabs[index + 1];
+		} else {
+			this.selectedTab = null;
+		}
+		// Remove the tab
+		this.tabs.splice(index, 1);
 	}
 
 	//@HostListener('scroll', ['$event'])

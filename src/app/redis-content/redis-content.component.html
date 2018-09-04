@@ -24,12 +24,58 @@
 	<div class="keyLine" *ngFor="let key of getKeysOnCurrentPage()">
 		<div class="keyNameSection">
 			<div class="keyType">
-				<label class="keyTypeText" [style.color]="getTypeTextColor(key)">
-					{{key.getTypeForDisplay()}}
-				</label>
+				<div class="vCenterTextContent">
+					<label class="keyTypeText" [style.color]="getTypeTextColor(key)">
+						{{key.getTypeForDisplay()}}
+					</label>
+				</div>
 			</div>
-			<div class="keyName">{{key.key}}</div>
+			<div class="keyName" [class.ellipsisOverflow]="!key.isOpen" [class.wrap]="key.isOpen" [class.noWrap]="!key.isOpen">{{key.key}}</div>
 		</div>
-		<div class="valueSection">{{key.getCompactValueDisplay()}}</div>
+		<div class="valueSection">
+			<div *ngIf="!key.isOpen">
+				<div class="valueButtonContainer">
+					<button (click)="openKey(key)">
+						<i class="fas fa-angle-down"></i>
+					</button>
+				</div>
+				<div class="valueText ellipsisOverflow noWrap">
+					{{key.getCompactValueDisplay()}}
+				</div>
+			</div>
+			<div *ngIf="key.isOpen">
+				<div class="valueButtonContainer">
+					<button (click)="closeKey(key)">
+						<i class="fas fa-angle-up"></i>
+					</button>
+				</div>
+				<div class="valueText wrap">
+					<span *ngIf="keyTypeIsString(key)">{{key.val}}</span>
+					<span *ngIf="key.type === keyTypeList || key.type === keyTypeSet">
+						<div *ngFor="let str of key.val">{{str}}</div>
+					</span>
+					<span *ngIf="key.type === keyTypeZset">
+						<table>
+							<tr class="tableRowHighlight" *ngFor="let zsetVal of key.val">
+								<td class="tableFirstCell">
+									<span class="tableCellMargin">{{zsetVal.score}}</span>
+								</td>
+								<td>{{zsetVal.zval}}</td>
+							</tr>
+						</table>
+					</span>
+					<span *ngIf="key.type === keyTypeHash">
+						<table>
+							<tr class="tableRowHighlight" *ngFor="let hashVal of key.val">
+								<td class="tableFirstCell">
+									<span class="tableCellMargin">{{hashVal.hkey}}</span>
+								</td>
+								<td>{{hashVal.hval}}</td>
+							</tr>
+						</table>
+					</span>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

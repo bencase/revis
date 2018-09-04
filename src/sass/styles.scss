@@ -4,17 +4,12 @@
 
 @font-face {
 	font-family: Lato;
-	src: url('/assets/fonts/Lato/Lato-Regular.ttf');
+	src: url('../assets/fonts/Lato/Lato-Regular.ttf');
 }
 
 @font-face {
 	font-family: Roboto;
-	src: url('/assets/fonts/Roboto/Roboto-Regular.ttf');
-}
-
-@font-face {
-	font-family: 'Roboto Condensed';
-	src: url('/assets/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+	src: url('../assets/fonts/Roboto/Roboto-Regular.ttf');
 }
 
 html, body {
@@ -23,17 +18,24 @@ html, body {
 	padding: 0;
 }
 
+table {
+	border-spacing: 0;
+}
+
+.height100 {
+	height: 100%;
+}
+
 * {
 	font-family: Lato;
 }
 
 %col {
-	padding: 15px;
 }
 
 *::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
+	width: $scrollbarWidth;
+	height: $scrollbarWidth;
 	background-color: transparent;
 }
 *::-webkit-scrollbar:hover {
@@ -44,8 +46,8 @@ html, body {
 	background-color: $appNavy;
 }
 .scrollbarThin::-webkit-scrollbar {
-	width: 6px;
-	height: 6px;
+	width: $scrollbarThinWidth;
+	height: $scrollbarThinWidth;
 }
 .scrollbarThin::-webkit-scrollbar-thumb {
 	border-radius: 3px;

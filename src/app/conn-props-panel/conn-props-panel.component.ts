@@ -17,6 +17,7 @@ export class ConnPropsPanelComponent implements OnInit {
 	@Input() port: string = "6379";
 	@Input() usesPassword: boolean;
 	@Input() password: string;
+	@Input() database: string;
 	@Input() close: () => void = function(){console.log("default close function called")};
 
 	@Output() connEmitter = new EventEmitter<Connection>();
@@ -44,6 +45,7 @@ export class ConnPropsPanelComponent implements OnInit {
 		if (this.usesPassword) {
 			conn.password = this.password;
 		}
+		conn.database = this.database;
 
 		let connsList = [conn];
 		handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnections(connsList), () => {

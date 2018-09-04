@@ -18,6 +18,11 @@ export class RedisContentComponent implements OnInit {
 
 	private readonly KEYS_PER_PAGE = 50;
 
+	readonly keyTypeList = KeyType.List;
+	readonly keyTypeSet = KeyType.Set;
+	readonly keyTypeZset = KeyType.Zset;
+	readonly keyTypeHash = KeyType.Hash;
+
 	@Input() props: TabProps;
 
 	currentPage = 1;
@@ -155,5 +160,19 @@ export class RedisContentComponent implements OnInit {
 		if (event.keyCode == 13 && !isNaN(this.pageInputNumber)) {
 			this.currentPage = this.pageInputNumber;
 		}
+	}
+
+	openKey(key: Key): void {
+		key.isOpen = true;
+	}
+	closeKey(key: Key): void {
+		key.isOpen = false;
+	}
+
+	keyTypeIsString(key: Key): boolean {
+		return !(key.type === this.keyTypeList
+			|| key.type === this.keyTypeSet
+			|| key.type === this.keyTypeZset
+			|| key.type === this.keyTypeHash);
 	}
 }
