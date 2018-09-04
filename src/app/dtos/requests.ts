@@ -3,3 +3,7 @@ export class KeysRequest {
 	public matchStr: string;
 	public limit: number;
 }
+
+export class RemoveConnectionRequest {
+	public connectionNames: string[];
+}

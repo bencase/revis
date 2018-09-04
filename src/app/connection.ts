@@ -8,6 +8,7 @@ export class Connection {
 	public host: string;
 	public port: string;
 	public password: string;
+	public database: string;
 
 	public getDisplayName(): string {
 		if (this.name) {

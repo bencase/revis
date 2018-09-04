@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'centered-modal',
-  templateUrl: './centered-modal.component.html'
+  templateUrl: './centered-modal.component.html',
+  styleUrls: ['./centered-modal.component.scss']
 })
 export class CenteredModalComponent implements OnInit {
 

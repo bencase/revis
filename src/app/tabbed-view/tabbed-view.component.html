@@ -1,15 +1,27 @@
-<div class="tabsContainer" *ngIf="hasTabs()">
-	<div class="tab" *ngFor="let tab of tabs">
-		<div [ngClass]="{selectedTabContents: tab === selectedTab, unselectedTabContents: tab !== selectedTab}" (click)="selectTab(tab)">
-			{{tab.name}}
+<div class="tvComponentContainer height100">
+	<div class="outerContainer scrollbarThin" (scroll)="handleScroll($event)" #hScrollElem>
+		<div class="tabsContainer" *ngIf="hasTabs()">
+			<div class="individualTabContainer" *ngFor="let tab of tabs; let i = index">
+				<div class="tab">
+					<div class="tabSeparator" *ngIf="i !== 0">&#8203;</div>
+					<div class="tabTitleContainer">
+						<div class="tabTitle pointerCursor" [ngClass]="{selectedTabContents: tab === selectedTab, unselectedTabContents: tab !== selectedTab}" (click)="selectTab(tab)">
+							{{tab.name}}
+							<button class="singleIconButton tabCloseButton warnButton pointerCursor" (click)="closeTab(i)">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-<div *ngFor="let tab of tabs">
-	<div [class.hidden]="tab !== selectedTab">
-		<redis-content [props]="tab.tabProps"></redis-content>
+	<div *ngFor="let tab of tabs" [class.height100]="tab === selectedTab">
+		<div [class.hidden]="tab !== selectedTab" [class.height100]="tab === selectedTab">
+			<redis-content [props]="tab.tabProps" [class.height100]="tab === selectedTab"></redis-content>
+		</div>
 	</div>
-</div>
-<div *ngIf="!selectedTab">
-	<ng-content></ng-content>
+	<div *ngIf="!selectedTab">
+		<ng-content></ng-content>
+	</div>
 </div>

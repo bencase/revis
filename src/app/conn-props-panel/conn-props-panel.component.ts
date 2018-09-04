@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { Connection } from '../connection';
 import { HttpResultContainer, ErrorResponse } from '../dtos/responses';
@@ -7,7 +7,8 @@ import { handleResponse } from '../util';
 
 @Component({
   selector: 'conn-props-panel',
-  templateUrl: './conn-props-panel.component.html'
+  templateUrl: './conn-props-panel.component.html',
+  styleUrls: ['./conn-props-panel.component.scss']
 })
 export class ConnPropsPanelComponent implements OnInit {
 
@@ -16,9 +17,12 @@ export class ConnPropsPanelComponent implements OnInit {
 	@Input() port: string = "6379";
 	@Input() usesPassword: boolean;
 	@Input() password: string;
+	@Input() database: string;
 	@Input() close: () => void = function(){console.log("default close function called")};
 
 	@Output() connEmitter = new EventEmitter<Connection>();
+
+	@ViewChild('firstInput') firstInput: ElementRef;
 
 	errorMessage: string;
 
@@ -27,7 +31,10 @@ export class ConnPropsPanelComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	/*
+	ngAfterViewInit() {
+		this.firstInput.nativeElement.focus();
+	}
+
 	saveConnection(): void {
 		this.clearErrorMessage();
 
@@ -38,43 +45,7 @@ export class ConnPropsPanelComponent implements OnInit {
 		if (this.usesPassword) {
 			conn.password = this.password;
 		}
-
-		let connsList = [conn];
-		this.redisCmdService.upsertConnections(connsList).subscribe((response) => {
-			this.handleResult(response, conn);
-		}, (erro) => {
-			this.handleResultWithBody(erro, conn);
-		});
-	}
-	private handleResult(response: HttpResponse<ErrorContainer>, conn: Connection): void {
-		let data = getNormalizedResponse<ErrorContainer>(response);
-		this.handleResultWithBody(data, conn);
-	}
-	private handleResultWithBody(data: ErrorContainer, conn: Connection): void {
-		if (data.error) {
-			this.onFailedSaveAttempt(data.error.message);
-		} else {
-			this.onSuccessfulSaveAttempt(conn);
-		}
-	}
-	private onFailedSaveAttempt(message: string): void {
-		this.errorMessage = message;
-	}
-	private onSuccessfulSaveAttempt(conn: Connection): void {
-		this.saveConn.emit(conn);
-		this.close();
-	}
-	*/
-	saveConnection(): void {
-		this.clearErrorMessage();
-
-		let conn = new Connection();
-		conn.name = this.name;
-		conn.host = this.host;
-		conn.port = this.port;
-		if (this.usesPassword) {
-			conn.password = this.password;
-		}
+		conn.database = this.database;
 
 		let connsList = [conn];
 		handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnections(connsList), () => {

@@ -20,7 +20,11 @@ function runShutdown() {
 }
 
 function createWindow() {
-    win = new BrowserWindow({ width: 1280, height: 960 });
+    win = new BrowserWindow({
+		width: 1280,
+		height: 960,
+		webPreferences: {webSecurity: false}
+	});
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'dist', 'revis', 'index.html'),

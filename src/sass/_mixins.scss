@@ -1,0 +1,22 @@
+@import './variables';
+
+@mixin plusButtonPadding($fontHeight: $singleIconButtonFontSize, $totalHeight: $fontHeight * $singleIconButtonRatioOfHeightToFontSize) {
+	padding-top: ($totalHeight - $fontHeight) * 0.6;
+	padding-bottom: ($totalHeight - $fontHeight) * 0.4;
+	padding-left: $fontHeight * 0.25;
+	padding-right: $fontHeight * 0.25;
+}
+
+@mixin cogButtonPadding($fontHeight: $singleIconButtonFontSize, $totalHeight: $fontHeight * $singleIconButtonRatioOfHeightToFontSize) {
+	padding-top: ($totalHeight - $fontHeight) * 0.6;
+	padding-bottom: ($totalHeight - $fontHeight) * 0.4;
+	padding-left: $fontHeight * 0.25;
+	padding-right: $fontHeight * 0.25;
+}
+
+@mixin timesButtonPadding($fontHeight: $singleIconButtonFontSize, $totalHeight: $fontHeight * $singleIconButtonRatioOfHeightToFontSize) {
+	padding-top: ($totalHeight - $fontHeight) * 0.6;
+	padding-bottom: ($totalHeight - $fontHeight) * 0.4;
+	padding-left: $fontHeight * 0.31;
+	padding-right: $fontHeight * 0.31;
+}

@@ -1,0 +1,19 @@
+@import '../../sass/variables';
+
+.connectionsColumn {
+	height: 100%;
+	background-color: rgba($appBlueR, $appBlueG, $appBlueB, 0.1);
+	padding: 15px;
+}
+
+.tabbedViewContainer {
+	height: 100%;
+	padding-top: 15px;
+	padding-left: 15px;
+	overflow-y: hidden;
+}
+
+tabbed-view {
+	height: 100%;
+	display: block;
+}

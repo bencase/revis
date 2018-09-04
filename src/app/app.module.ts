@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 
+import { ClickOutsideModule } from 'ng-click-outside';
+
 import { AppComponent } from './app.component';
 import { MainPanelComponent } from './main-panel/main-panel.component';
 
@@ -26,7 +28,8 @@ import { RedisContentComponent } from './redis-content/redis-content.component';
   imports: [
 	BrowserModule,
 	FormsModule,
-	HttpClientModule
+	HttpClientModule,
+	ClickOutsideModule
   ],
   providers: [RedisCmdService],
   bootstrap: [AppComponent]

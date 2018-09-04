@@ -1,32 +1,36 @@
 <div>
 	<div>
 		<label>Name: </label>
-		<input [(ngModel)]="name">
+		<input class="liteInput marginLeft" [(ngModel)]="name" #firstInput>
 	</div>
-	<div>
+	<div class="marginTop">
 		<label>Host: </label>
-		<input [(ngModel)]="host">
+		<input class="liteInput marginLeft" [(ngModel)]="host">
 	</div>
-	<div>
+	<div class="marginTop">
 		<label>Port: </label>
-		<input [(ngModel)]="port">
+		<input class="liteInput marginLeft" [(ngModel)]="port">
 	</div>
-	<div>
+	<div class="marginTop">
 		<input type="checkbox" [(ngModel)]="usesPassword">
-		<label>Has Password</label>
+		<label class="marginLeft">Has Password</label>
 	</div>
-	<div [ngClass]="{'fadedOption': !usesPassword}">
+	<div class="marginTop bigMarginBottom" [ngClass]="{'fadedOption': !usesPassword}">
 		<label>Password: </label>
-		<input [disabled]="!usesPassword" [(ngModel)]="password">
+		<input class="liteInput marginLeft" [disabled]="!usesPassword" [(ngModel)]="password">
 	</div>
 	<div>
-		<div>
-			<span *ngIf="errorMessage" class="errorMessageTextDisplay">
-				Error: {{errorMessage}}
-			</span>
-			<button class="pointerCursor">Test</button>
-			<button class="pointerCursor" (click)="saveConnection()">Save</button>
-			<button class="closeButton pointerCursor" (click)="close()">Cancel</button>
+		<div class="clearfix">
+			<div class="errorBox">
+				<div *ngIf="errorMessage" class="errorMessageTextDisplay errorText">
+					Error: {{errorMessage}}
+				</div>
+			</div>
+			<div class="buttonsContainer">
+				<button class="buttonSpacing textButton highlightButton pointerCursor">Test</button>
+				<button class="buttonSpacing textButton highlightButton pointerCursor" (click)="saveConnection()">Save</button>
+				<button class="buttonSpacing textButton warnButton pointerCursor" (click)="close()">Cancel</button>
+			</div>
 		</div>
 	</div>
 </div>

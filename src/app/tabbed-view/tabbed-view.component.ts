@@ -1,13 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 import { TabProps } from '../objects';
 import { CountHolder } from '../util';
 
 @Component({
   selector: 'tabbed-view',
-  templateUrl: './tabbed-view.component.html'
+  templateUrl: './tabbed-view.component.html',
+  styleUrls: ['./tabbed-view.component.scss'],
+  host: {'(scroll)': 'handleScroll($event)'}
 })
 export class TabbedViewComponent implements OnInit {
+
+	private readonly scrollAmount = 80;
+
+	@ViewChild('hScrollElem') hScrollElem: ElementRef;
 
 	selectedTab: Tab;
 	tabs: Tab[] = [];
@@ -17,6 +23,21 @@ export class TabbedViewComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+	}
+
+	ngAfterViewInit() {
+		this.hScrollElem.nativeElement.addEventListener("mousewheel", (e) => {
+			if (e.wheelDelta > 0) {
+				this.hScrollElem.nativeElement.scrollLeft -= this.scrollAmount;
+				console.log("right");
+			} else {
+				this.hScrollElem.nativeElement.scrollLeft += this.scrollAmount;
+				console.log("left");
+			}
+			e.stopPropagation();
+			e.preventDefault();
+			e.returnValue = false;
+		}, false);
 	}
 
 	public addTab(tabName: string, tabProps: TabProps): void {
@@ -47,6 +68,25 @@ export class TabbedViewComponent implements OnInit {
 
 	selectTab(tab: Tab): void {
 		this.selectedTab = tab;
+	}
+
+	closeTab(index: number): void {
+		// If this is the currently selected tab, find another tab to be selected
+		if (index > 0) {
+			this.selectedTab = this.tabs[index - 1];
+		} else if (this.tabs.length > index + 1) {
+			this.selectedTab = this.tabs[index + 1];
+		} else {
+			this.selectedTab = null;
+		}
+		// Remove the tab
+		this.tabs.splice(index, 1);
+	}
+
+	//@HostListener('scroll', ['$event'])
+	handleScroll($event): void {
+		console.log("blah");
+		console.log(JSON.stringify($event));
 	}
 }
 

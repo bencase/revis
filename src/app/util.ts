@@ -94,4 +94,7 @@ export class CountHolder {
 	public getCount(val: string): number {
 		return this.countsMap[val];
 	}
+	public reset(val: string): void {
+		this.countsMap[val] = 0;
+	}
 }
