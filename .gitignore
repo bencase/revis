@@ -40,7 +40,10 @@ Thumbs.db
 
 # Packages created from electron-packager
 /revis-linux-x64
+/revis-win32-x64
+/revis-darwin-x64
 
 # Backend files
 /server
 conns.yml
+

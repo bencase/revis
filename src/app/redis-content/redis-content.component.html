@@ -1,21 +1,21 @@
 <div class="scanToolbar">
 	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
-	<button (click)="findKeys()">Find</button>
+	<button class="buttonSpacing textButton highlightButton pointerCursor findKeysButton" (click)="findKeys()">Find</button>
 	<div class="pagesNavigator">
-		<label (click)="navigateToFirstPage()" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
+		<label (click)="navigateToFirstPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
 			<i class="fas fa-angle-double-left"></i>
 		</label>
-		<label (click)="navigateToPreviousPage()" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
+		<label (click)="navigateToPreviousPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
 			<i class="fas fa-angle-left"></i>
 		</label>
-		<input size="3" [(ngModel)]="pageInputNumber" (keydown)="pageSelectInputKeydown($event)">
-		<label (click)="navigateToNextPage()" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
+		<input size="3" class="pageNavMargin" [(ngModel)]="pageInputNumber" (keydown)="pageSelectInputKeydown($event)">
+		<label (click)="navigateToNextPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
 			<i class="fas fa-angle-right"></i>
 		</label>
-		<label (click)="navigateToLastPage()" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
+		<label (click)="navigateToLastPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
 			<i class="fas fa-angle-double-right"></i>
 		</label>
-		<span>
+		<span class="keyCount unselectable">
 			{{keys.length}} keys
 		</span>
 	</div>
@@ -35,7 +35,7 @@
 		<div class="valueSection">
 			<div *ngIf="!key.isOpen">
 				<div class="valueButtonContainer">
-					<button (click)="openKey(key)">
+					<button class="pointerCursor" (click)="openKey(key)">
 						<i class="fas fa-angle-down"></i>
 					</button>
 				</div>
@@ -45,32 +45,32 @@
 			</div>
 			<div *ngIf="key.isOpen">
 				<div class="valueButtonContainer">
-					<button (click)="closeKey(key)">
+					<button class="pointerCursor" (click)="closeKey(key)">
 						<i class="fas fa-angle-up"></i>
 					</button>
 				</div>
 				<div class="valueText wrap">
 					<span *ngIf="keyTypeIsString(key)">{{key.val}}</span>
 					<span *ngIf="key.type === keyTypeList || key.type === keyTypeSet">
-						<div *ngFor="let str of key.val">{{str}}</div>
+						<div class="hoverHighlight" *ngFor="let str of key.val">{{str}}</div>
 					</span>
 					<span *ngIf="key.type === keyTypeZset">
-						<table>
-							<tr class="tableRowHighlight" *ngFor="let zsetVal of key.val">
+						<table class="redisContentTable">
+							<tr class="hoverHighlight" *ngFor="let zsetVal of key.val">
 								<td class="tableFirstCell">
 									<span class="tableCellMargin">{{zsetVal.score}}</span>
 								</td>
-								<td>{{zsetVal.zval}}</td>
+								<td class="tableLastCell">{{zsetVal.zval}}</td>
 							</tr>
 						</table>
 					</span>
 					<span *ngIf="key.type === keyTypeHash">
-						<table>
-							<tr class="tableRowHighlight" *ngFor="let hashVal of key.val">
+						<table class="redisContentTable">
+							<tr class="hoverHighlight" *ngFor="let hashVal of key.val">
 								<td class="tableFirstCell">
 									<span class="tableCellMargin">{{hashVal.hkey}}</span>
 								</td>
-								<td>{{hashVal.hval}}</td>
+								<td class="tableLastCell">{{hashVal.hval}}</td>
 							</tr>
 						</table>
 					</span>

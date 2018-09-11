@@ -4,6 +4,7 @@
 .outerContainer {
 	white-space: nowrap;
 	overflow-x: scroll;
+	overflow-y: hidden;
 	margin-bottom: $outerContainerMarginBottom;
 }
 
