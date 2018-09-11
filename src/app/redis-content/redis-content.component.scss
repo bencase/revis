@@ -4,9 +4,20 @@
 	height: $scanToolbarHeight;
 }
 
+.findKeysButton {
+	margin-left: 0.5em;
+}
+.pageNavMargin {
+	margin-left: 0.2em;
+}
 .pagesNavigator {
 	display: inline-block;
 	float: right;
+}
+.keyCount{
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	opacity: 0.4;
 }
 
 .keysContainer {
@@ -69,12 +80,20 @@
 	word-break: break-all;
 }
 
+.redisContentTable {
+	//width: 100%;
+}
 .tableFirstCell {
 	vertical-align: top;
+	//width: 1%;
+	//white-space: nowrap;
 }
-.tableRowHighlight:hover {
-	background-color: rgba(0, 0, 0, 0.03);
+.tableLastCell {
+	vertical-align: top;
 }
 .tableCellMargin {
 	margin-right: 10px;
+}
+.hoverHighlight:hover {
+	background-color: rgba(0, 0, 0, 0.03);
 }
