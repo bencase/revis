@@ -24,7 +24,7 @@ export class ConnectionsPanelComponent implements OnInit {
 	private clickCounter: CountHolder = new CountHolder();
 	private timeoutHolder = {};
 
-	constructor(private redisCmdService : RedisCmdService) { }
+	constructor(private redisCmdService : RedisCmdService) {}
 
 	ngOnInit() {
 		handleResponse<ConnectionsResponse>(this.redisCmdService.getConnections(),

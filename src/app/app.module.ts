@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http'
 
 import { ClickOutsideModule } from 'ng-click-outside';
 
+import { NgxElectronModule } from 'ngx-electron';
+
 import { AppComponent } from './app.component';
 import { MainPanelComponent } from './main-panel/main-panel.component';
 
@@ -29,7 +31,8 @@ import { RedisContentComponent } from './redis-content/redis-content.component';
 	BrowserModule,
 	FormsModule,
 	HttpClientModule,
-	ClickOutsideModule
+	ClickOutsideModule,
+	NgxElectronModule
   ],
   providers: [RedisCmdService],
   bootstrap: [AppComponent]
