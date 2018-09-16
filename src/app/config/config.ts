@@ -5,3 +5,9 @@ export enum KeyType {
 	Zset = "zset",
 	Hash = "hash"
 }
+export enum Header {
+	ConnName = "connname",
+	Pattern = "pattern",
+	ReqId = "reqid",
+	ScanId = "scanid"
+}

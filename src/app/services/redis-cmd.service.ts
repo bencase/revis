@@ -6,9 +6,10 @@ import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ElectronService } from 'ngx-electron';
 
-import { KeysRequest, RemoveConnectionRequest } from '../dtos/requests';
+import { RemoveConnectionRequest } from '../dtos/requests';
 import { HttpResultContainer, KeysResponse } from '../dtos/responses';
 import { Connection, ConnectionsContainer } from '../connection';
+import { Header } from '../config/config';
 
 @Injectable({
   providedIn: 'root'
@@ -18,30 +19,22 @@ export class RedisCmdService {
 	private readonly HOSTNAME = "http://localhost:";
 	private readonly REDIS_SERVICE = "/api/redis";
 
-	private readonly CONN_NAME_HEADER = "connName";
-	private readonly PATTERN_HEADER = "pattern";
-	private readonly SCAN_ID_HEADER = "scanId";
-
 	private hasInitialized = false;
 
 	private port = "63799";
 
 	constructor(private httpClient: HttpClient, private elecService: ElectronService) {
-		this.elecService.ipcRenderer.on("port", (event, arg) => {
-			this.port = arg;
-			console.log("Set port to " + this.port);
-			this.hasInitialized = true;
-		});
+		if (this.elecService.ipcRenderer) {
+			this.elecService.ipcRenderer.on("port", (event, arg) => {
+				this.port = arg;
+				console.log("Set port to " + this.port);
+				this.hasInitialized = true;
+			});
+		}
 	}
 
 	private getPathPrefix(): string {
 		return this.HOSTNAME + this.port + this.REDIS_SERVICE;
-	}
-
-	public getKeys(pattern: string): Observable<KeysResponse> {
-		let keysReq = new KeysRequest();
-		keysReq.matchStr = pattern;
-		return this.httpClient.post<KeysResponse>(this.getPathPrefix() + "/keys", keysReq);
 	}
 
 	public getConnections(): Observable<HttpResponse<ConnectionsContainer>> {
@@ -77,20 +70,22 @@ export class RedisCmdService {
 			.pipe(catchError(this.handleError));
 	}
 
-	public getInitialKeysWithValues(connName: string, pattern: string): Observable<HttpResponse<KeysResponse>> {
+	public getInitialKeysWithValues(connName: string, pattern: string, reqId: string): Observable<HttpResponse<KeysResponse>> {
 		let headers = {};
-		headers[this.CONN_NAME_HEADER] = connName;
-		headers[this.PATTERN_HEADER] = pattern;
-		headers[this.SCAN_ID_HEADER] = "0";
+		headers[Header.ConnName] = connName;
+		headers[Header.Pattern] = pattern;
+		headers[Header.ScanId] = "0";
+		headers[Header.ReqId] = reqId;
 		return this.httpClient.get<KeysResponse>(this.getPathPrefix() + "/kvs",
 				{observe: "response", headers: headers})
 			.pipe(catchError(this.handleError));
 	}
-	public getMoreKeysWithValues(scanId: string): Observable<HttpResponse<KeysResponse>> {
+	public getMoreKeysWithValues(scanId: string, reqId: string): Observable<HttpResponse<KeysResponse>> {
 		let headers = {};
-		headers[this.CONN_NAME_HEADER] = "";
-		headers[this.PATTERN_HEADER] = "";
-		headers[this.SCAN_ID_HEADER] = scanId;
+		headers[Header.ConnName] = "";
+		headers[Header.Pattern] = "";
+		headers[Header.ScanId] = scanId;
+		headers[Header.ReqId] = reqId;
 		return this.httpClient.get<KeysResponse>(this.getPathPrefix() + "/kvs",
 				{observe: "response", headers: headers})
 			.pipe(catchError(this.handleError));

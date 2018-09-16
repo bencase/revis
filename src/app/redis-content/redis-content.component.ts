@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 
 import { TabProps } from '../objects';
 import { RedisCmdService } from '../services/redis-cmd.service';
-import { ErrorResponse, HashVal, Key, KeysResponse, ZsetVal, getScanId } from '../dtos/responses';
-import { handleResponse } from '../util';
+import { ErrorResponse, HashVal, Key, KeysResponse, ZsetVal, getReqId, getScanId } from '../dtos/responses';
+import { getRandomString, handleResponse } from '../util';
 import { KeyType } from '../config/config';
 
 @Component({
@@ -32,6 +32,8 @@ export class RedisContentComponent implements OnInit {
 
 	keys: Key[] = [];
 
+	private currentReqId: string;
+
 	constructor(private redisCmdService : RedisCmdService) { }
 
 	ngOnInit(): void {
@@ -48,6 +50,8 @@ export class RedisContentComponent implements OnInit {
 		this.getKeysMatchingPattern(this.pattern);
 	}
 	getKeysMatchingPattern(inputPattern: string): void {
+		let reqId = getRandomString();
+		this.currentReqId = reqId;
 		// Empty the current keys
 		this.keys = [];
 		// Get new keys
@@ -55,16 +59,22 @@ export class RedisContentComponent implements OnInit {
 		if (!patternToUse || patternToUse === "") {
 			patternToUse = "*";
 		}
-		let httpResp$ = this.redisCmdService.getInitialKeysWithValues(this.props.connName, patternToUse);
+		let httpResp$ = this.redisCmdService.getInitialKeysWithValues(this.props.connName, patternToUse, reqId);
 		this.getKeysFromObs(httpResp$, true);
 	}
-	getMoreKeysFromScanId(scanId: string): void {
-		let httpResp$ = this.redisCmdService.getMoreKeysWithValues(scanId);
+	getMoreKeysFromScanId(scanId: string, reqId: string): void {
+		let httpResp$ = this.redisCmdService.getMoreKeysWithValues(scanId, reqId);
 		this.getKeysFromObs(httpResp$, false);
 	}
 	private getKeysFromObs(httpResp$: Observable<HttpResponse<KeysResponse>>, isInitialRequest: boolean): void {
 		handleResponse<KeysResponse>(httpResp$,
 			(keysResp: KeysResponse) => {
+				// First, check to see if the requestId matches. If not, do nothing further.
+				let reqId = getReqId(keysResp);
+				if (this.currentReqId !== reqId) {
+					return;
+				}
+				// Handle the response
 				if (isInitialRequest) {
 					this.setPage(1);
 				}
@@ -72,7 +82,7 @@ export class RedisContentComponent implements OnInit {
 					this.keys.push(this.getPreparedKey(key));
 				}
 				if (keysResp.status === 202) {
-					this.getMoreKeysFromScanId(getScanId(keysResp));
+					this.getMoreKeysFromScanId(getScanId(keysResp), reqId);
 				}
 			}, (errResp: ErrorResponse) => {
 				console.log("Error getting keys: " + errResp.message);

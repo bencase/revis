@@ -63,6 +63,30 @@ function getNormalizedResponse<T extends HttpResultContainer>(response: HttpResp
 }
 
 
+/**
+ * Returns a random 16-character string of numbers, lowercase letters, and
+ * capital letters (e.g. 'QWgHmdjW4AorFZoj')
+ */
+export function getRandomString(): string {
+	let randomVals: number[] = [];
+	for (let i = 0; i < 16; i++) {
+		let val = Math.trunc(Math.random() * 62);
+		if (val <= 9) {
+			// values will start at ASCII 48 ('0')
+			val += 48;
+		} else if (val <= 35) {
+			// values will start at ASCII 65 ('A')
+			val += 55;
+		} else {
+			// values will start at ASCII 97 ('a')
+			val += 61;
+		}
+		randomVals.push(val);
+	}
+	return String.fromCharCode(...randomVals);
+}
+
+
 export interface CountsMap {
 	[key: string]: number
 }
