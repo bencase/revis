@@ -8,6 +8,5 @@ export enum KeyType {
 export enum Header {
 	ConnName = "connname",
 	Pattern = "pattern",
-	ReqId = "reqid",
 	ScanId = "scanid"
 }

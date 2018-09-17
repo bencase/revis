@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 import { Connection } from '../connection';
 import { HttpResultContainer, ErrorResponse } from '../dtos/responses';
 import { RedisCmdService } from '../services/redis-cmd.service';
-import { handleResponse } from '../util';
+import { getRandomString, handleResponse } from '../util';
 
 @Component({
   selector: 'conn-props-panel',
@@ -17,7 +17,7 @@ export class ConnPropsPanelComponent implements OnInit {
 	@Input() port: string = "6379";
 	@Input() usesPassword: boolean;
 	@Input() password: string;
-	@Input() database: string;
+	@Input() db: number = 0;
 	@Input() close: () => void = function(){console.log("default close function called")};
 
 	@Output() connEmitter = new EventEmitter<Connection>();
@@ -25,6 +25,13 @@ export class ConnPropsPanelComponent implements OnInit {
 	@ViewChild('firstInput') firstInput: ElementRef;
 
 	errorMessage: string;
+	otherMessage: string;
+	hasPassedTest: boolean;
+	isAwaitingResults: boolean;
+	isAwaitingResultsTest: boolean;
+	isAwaitingResultsSave: boolean;
+
+	private currentReqId: string;
 
 	constructor(private redisCmdService : RedisCmdService) { }
 
@@ -35,8 +42,17 @@ export class ConnPropsPanelComponent implements OnInit {
 		this.firstInput.nativeElement.focus();
 	}
 
-	saveConnection(): void {
-		this.clearErrorMessage();
+	connFieldChanged(): void {
+		this.hasPassedTest = false;
+		this.otherMessage = null;
+	}
+
+	testConnection(): void {
+		if (this.isAwaitingResults || this.hasPassedTest) {
+			return;
+		}
+
+		this.clearMessages();
 
 		let conn = new Connection();
 		conn.name = this.name;
@@ -45,24 +61,79 @@ export class ConnPropsPanelComponent implements OnInit {
 		if (this.usesPassword) {
 			conn.password = this.password;
 		}
-		conn.database = this.database;
+		conn.db = this.db;
 
-		let connsList = [conn];
-		handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnections(connsList), () => {
-			this.onSuccessfulSaveAttempt(conn);
+		this.hasPassedTest = false;
+		this.isAwaitingResults = true;
+		this.isAwaitingResultsTest = true;
+		this.currentReqId = getRandomString();
+		handleResponse<HttpResultContainer>(this.redisCmdService.testConnection(conn), () => {
+			this.onSuccessfulTest();
 		}, (errResp: ErrorResponse) => {
-			this.onFailedSaveAttempt(errResp.message);
+			this.onFailedTest(errResp.message);
+		});
+
+	}
+	private onSuccessfulTest(): void {
+		this.isAwaitingResults = false;
+		this.isAwaitingResultsTest = false;
+		this.isAwaitingResultsSave = false;
+		this.hasPassedTest = true;
+		this.otherMessage = "Connection Successful";
+	}
+	private onFailedTest(message: string): void {
+		this.isAwaitingResults = false;
+		this.isAwaitingResultsTest = false;
+		this.isAwaitingResultsSave = false;
+		this.errorMessage = "Connection Invalid";
+	}
+
+	saveConnection(): void {
+		if (this.isAwaitingResults) {
+			return;
+		}
+
+		this.clearMessages();
+
+		let conn = new Connection();
+		conn.name = this.name;
+		conn.host = this.host;
+		conn.port = this.port;
+		if (this.usesPassword) {
+			conn.password = this.password;
+		}
+		conn.db = this.db;
+
+		this.isAwaitingResults = true;
+		this.isAwaitingResultsSave = true;
+		this.currentReqId = getRandomString();
+		handleResponse<HttpResultContainer>(this.redisCmdService.testConnection(conn), () => {
+			let connsList = [conn];
+			handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnections(connsList), () => {
+				this.onSuccessfulSaveAttempt(conn);
+			}, (errResp: ErrorResponse) => {
+				this.onFailedSaveAttempt(errResp.message);
+			});
+		}, (errResp: ErrorResponse) => {
+			this.onFailedTest(errResp.message);
 		});
 	}
-	private onFailedSaveAttempt(message: string): void {
-		this.errorMessage = message;
-	}
 	private onSuccessfulSaveAttempt(conn: Connection): void {
+		this.isAwaitingResults = false;
+		this.isAwaitingResultsTest = false;
+		this.isAwaitingResultsSave = false;
 		this.connEmitter.emit(conn);
 		this.close();
 	}
+	private onFailedSaveAttempt(message: string): void {
+		this.isAwaitingResults = false;
+		this.isAwaitingResultsTest = false;
+		this.isAwaitingResultsSave = false;
+		this.errorMessage = message;
+	}
 
-	private clearErrorMessage(): void {
+	private clearMessages(): void {
 		this.errorMessage = null;
+		this.otherMessage = null;
 	}
 }

@@ -1,12 +1,18 @@
+@import '../../sass/variables';
+@import '../../sass/mixins';
+
 .errorBox {
 	width: 12em;
 	display: inline-block;
 	margin-top: 5px;
 }
-.errorText {
+.messageText {
 	vertical-align: middle;
 }
 
+.dbInput {
+	width: 2.5em;
+}
 .marginLeft {
 	margin-left: 4px;
 }
@@ -24,4 +30,24 @@
 .buttonSpacing {
 	margin-top: 4px;
 	margin-left: 8px;
+}
+
+.inactiveButton {
+	opacity: 0.4;
+}
+
+.testContainer {
+	position: relative;
+	display: inline-block;
+}
+.passedTestIcon {
+	color: $appBlue;
+	position: absolute;
+	top: 0.5em;
+	left: 50%;
+	transform: translate(calc(-50% + 0.25em), 0);
+}
+
+.awaitingTestResultsSpinner:before {
+	@include cssSpinner(0.5em, 1.19em, 20px, 20px);
 }

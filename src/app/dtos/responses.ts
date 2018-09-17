@@ -69,9 +69,6 @@ export class ErrorResponse {
 export function getScanId(result: HttpResultContainer) {
 	return result.headers.get(Header.ScanId);
 }
-export function getReqId(result: HttpResultContainer) {
-	return result.headers.get(Header.ReqId);
-}
 
 function getListOrSetAsString(list: string[]): string {
 	let builderArray: string[] = [];

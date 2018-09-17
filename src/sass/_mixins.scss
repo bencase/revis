@@ -20,3 +20,16 @@
 	padding-left: $fontHeight * 0.31;
 	padding-right: $fontHeight * 0.31;
 }
+
+@mixin cssSpinner($top: 0.5em, $left: 1.19em, $width: 20px, $height: 20px) {
+	content: '';
+	position: absolute;
+	top: $top;
+	left: $left;
+	width: $width;
+	height: $height;
+	border-radius: 50%;
+	border-top: 2px solid $appBlue;
+	border-right: 2px solid transparent;
+	animation: spinner .6s linear infinite;
+}

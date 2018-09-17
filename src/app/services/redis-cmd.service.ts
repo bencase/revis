@@ -70,12 +70,16 @@ export class RedisCmdService {
 			.pipe(catchError(this.handleError));
 	}
 
+	public testConnection(conn: Connection): Observable<HttpResponse<HttpResultContainer>> {
+		return this.httpClient.post<HttpResultContainer>(this.getPathPrefix() + "/connections/test", conn, {observe: "response"})
+			.pipe(catchError(this.handleError));
+	}
+
 	public getInitialKeysWithValues(connName: string, pattern: string, reqId: string): Observable<HttpResponse<KeysResponse>> {
 		let headers = {};
 		headers[Header.ConnName] = connName;
 		headers[Header.Pattern] = pattern;
 		headers[Header.ScanId] = "0";
-		headers[Header.ReqId] = reqId;
 		return this.httpClient.get<KeysResponse>(this.getPathPrefix() + "/kvs",
 				{observe: "response", headers: headers})
 			.pipe(catchError(this.handleError));
@@ -85,7 +89,6 @@ export class RedisCmdService {
 		headers[Header.ConnName] = "";
 		headers[Header.Pattern] = "";
 		headers[Header.ScanId] = scanId;
-		headers[Header.ReqId] = reqId;
 		return this.httpClient.get<KeysResponse>(this.getPathPrefix() + "/kvs",
 				{observe: "response", headers: headers})
 			.pipe(catchError(this.handleError));
