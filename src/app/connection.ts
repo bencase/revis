@@ -8,12 +8,16 @@ export class Connection {
 	public host: string;
 	public port: string;
 	public password: string;
-	public database: string;
+	public db: number;
 
 	public getDisplayName(): string {
 		if (this.name) {
 			return this.name;
 		}
-		return this.host + ":" + this.port;
+		let displayName = this.host + ":" + this.port;
+		if (this.db) {
+			displayName = displayName + "[" + this.db + "]"
+		}
+		return displayName;
 	}
 }

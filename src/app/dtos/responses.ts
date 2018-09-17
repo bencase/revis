@@ -2,9 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Connection } from '../connection';
 
-import { KeyType } from '../config/config';
-
-const SCAN_ID_HEADER = "scanId";
+import { Header, KeyType } from '../config/config';
 
 export class HttpResultContainer {
 	public error: ErrorResponse;
@@ -69,7 +67,7 @@ export class ErrorResponse {
 }
 
 export function getScanId(result: HttpResultContainer) {
-	return result.headers.get(SCAN_ID_HEADER);
+	return result.headers.get(Header.ScanId);
 }
 
 function getListOrSetAsString(list: string[]): string {

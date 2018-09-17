@@ -5,30 +5,52 @@
 	</div>
 	<div class="marginTop">
 		<label>Host: </label>
-		<input class="liteInput marginLeft" [(ngModel)]="host">
+		<input class="liteInput marginLeft" (input)="connFieldChanged()" [(ngModel)]="host">
 	</div>
 	<div class="marginTop">
 		<label>Port: </label>
-		<input class="liteInput marginLeft" [(ngModel)]="port">
+		<input class="liteInput marginLeft" (input)="connFieldChanged()" [(ngModel)]="port">
 	</div>
 	<div class="marginTop">
-		<input type="checkbox" [(ngModel)]="usesPassword">
+		<input type="checkbox" (input)="connFieldChanged()" [(ngModel)]="usesPassword">
 		<label class="marginLeft">Has Password</label>
 	</div>
-	<div class="marginTop bigMarginBottom" [ngClass]="{'fadedOption': !usesPassword}">
+	<div class="marginTop" [ngClass]="{'fadedOption': !usesPassword}">
 		<label>Password: </label>
-		<input type="password" class="liteInput marginLeft" [disabled]="!usesPassword" [(ngModel)]="password">
+		<input type="password" class="liteInput marginLeft" (input)="connFieldChanged()" [disabled]="!usesPassword" [(ngModel)]="password">
+	</div>
+	<div class="marginTop bigMarginBottom">
+		<label>Database: </label>
+		<input type="number" class="liteInput marginLeft dbInput" [(ngModel)]="db">
 	</div>
 	<div>
 		<div class="clearfix">
 			<div class="errorBox">
-				<div *ngIf="errorMessage" class="errorMessageTextDisplay errorText">
+				<div *ngIf="errorMessage" class="errorMessageTextDisplay messageText">
 					Error: {{errorMessage}}
+				</div>
+				<div *ngIf="otherMessage" class="messageText">
+					{{otherMessage}}
 				</div>
 			</div>
 			<div class="buttonsContainer">
-				<button class="buttonSpacing textButton highlightButton pointerCursor">Test</button>
-				<button class="buttonSpacing textButton highlightButton pointerCursor" (click)="saveConnection()">Save</button>
+				<span class="testContainer">
+					<div *ngIf="hasPassedTest" class="passedTestIcon"><i class="fas fa-check"></i></div>
+					<div *ngIf="isAwaitingResultsTest" class="awaitingTestResultsSpinner"></div>
+					<button class="buttonSpacing textButton"
+						[class.highlightButton]="!(hasPassedTest || isAwaitingResults)"
+						[class.pointerCursor]="!(hasPassedTest || isAwaitingResults)"
+						[class.inactiveButton]="hasPassedTest || isAwaitingResults"
+						[disabled]="hasPassedTest || isAwaitingResults" (click)="testConnection()">Test</button>
+				</span>
+				<span class="testContainer">
+					<div *ngIf="isAwaitingResultsSave" class="awaitingTestResultsSpinner"></div>
+					<button class="buttonSpacing textButton"
+						[class.highlightButton]="!isAwaitingResults"
+						[class.pointerCursor]="!isAwaitingResults"
+						[class.inactiveButton]="isAwaitingResults"
+						[disabled]="isAwaitingResults" (click)="saveConnection()">Save</button>
+				</span>
 				<button class="buttonSpacing textButton warnButton pointerCursor" (click)="close()">Cancel</button>
 			</div>
 		</div>
