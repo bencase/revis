@@ -13,6 +13,8 @@ export class MainPanelComponent implements OnInit {
 	@ViewChild(TabbedViewComponent) tabbedView: TabbedViewComponent;
 
 	selectedConn: string;
+	hasReceivedNumOfConnectionsEvent: boolean;
+	numOfConnections: number;
 
 	constructor() { }
 
@@ -23,6 +25,11 @@ export class MainPanelComponent implements OnInit {
 		// TODO create a tab properties type
 		let tabProps = new TabProps();
 		this.tabbedView.addTab(newSelectedConn, tabProps);
+	}
+
+	numberOfConnectionsChanged(numOfConnections: number): void {
+		this.numOfConnections = numOfConnections;
+		this.hasReceivedNumOfConnectionsEvent = true;
 	}
 
 }

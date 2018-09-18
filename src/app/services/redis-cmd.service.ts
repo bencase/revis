@@ -7,7 +7,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { ElectronService } from 'ngx-electron';
 
 import { RemoveConnectionRequest } from '../dtos/requests';
-import { HttpResultContainer, KeysResponse } from '../dtos/responses';
+import { DeleteResponse, HttpResultContainer, KeysResponse } from '../dtos/responses';
 import { Connection, ConnectionsContainer } from '../connection';
 import { Header } from '../config/config';
 
@@ -75,7 +75,7 @@ export class RedisCmdService {
 			.pipe(catchError(this.handleError));
 	}
 
-	public getInitialKeysWithValues(connName: string, pattern: string, reqId: string): Observable<HttpResponse<KeysResponse>> {
+	public getInitialKeysWithValues(connName: string, pattern: string): Observable<HttpResponse<KeysResponse>> {
 		let headers = {};
 		headers[Header.ConnName] = connName;
 		headers[Header.Pattern] = pattern;
@@ -84,7 +84,7 @@ export class RedisCmdService {
 				{observe: "response", headers: headers})
 			.pipe(catchError(this.handleError));
 	}
-	public getMoreKeysWithValues(scanId: string, reqId: string): Observable<HttpResponse<KeysResponse>> {
+	public getMoreKeysWithValues(scanId: string): Observable<HttpResponse<KeysResponse>> {
 		let headers = {};
 		headers[Header.ConnName] = "";
 		headers[Header.Pattern] = "";
@@ -95,5 +95,14 @@ export class RedisCmdService {
 	}
 	private handleError(err: HttpErrorResponse): Observable<never> {
 		return throwError(err.error);
+	}
+
+	public deleteKeysWithPattern(connName: string, pattern: string): Observable<HttpResponse<DeleteResponse>> {
+		let headers = {};
+		headers[Header.ConnName] = connName;
+		headers[Header.Pattern] = pattern;
+		return this.httpClient.delete<DeleteResponse>(this.getPathPrefix() + "/keys",
+				{observe: "response", headers: headers})
+			.pipe(catchError(this.handleError));
 	}
 }

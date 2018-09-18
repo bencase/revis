@@ -1,4 +1,19 @@
 @import '../../sass/variables';
+@import '../../sass/mixins';
+
+
+.warningTextContainer {
+	max-width: 30em;
+	margin-left: 0.5em;
+	margin-right: 1em;
+}
+.buttonsContainer {
+	float: right;
+}
+.buttonSpacing {
+	margin-top: 4px;
+	margin-left: 8px;
+}
 
 .scanToolbar {
 	height: $scanToolbarHeight;
@@ -7,6 +22,17 @@
 .findKeysButton {
 	margin-left: 0.5em;
 }
+.spinnerContainer {
+	position: relative;
+	width: 1.5em;
+}
+.awaitingResponseSpinner {
+	display: inline-block;
+}
+.awaitingResponseSpinner:before {
+	@include cssSpinner(0, 0.75em, 1em, 1em);
+}
+
 .pageNavMargin {
 	margin-left: 0.2em;
 }

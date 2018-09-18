@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { TabProps } from '../objects';
 import { RedisCmdService } from '../services/redis-cmd.service';
-import { ErrorResponse, HashVal, Key, KeysResponse, ZsetVal, getScanId } from '../dtos/responses';
+import { DeleteResponse, ErrorResponse, HashVal, Key, KeysResponse, ZsetVal, getScanId } from '../dtos/responses';
 import { getRandomString, handleResponse } from '../util';
 import { KeyType } from '../config/config';
 
@@ -31,6 +31,13 @@ export class RedisContentComponent implements OnInit {
 	pageInputNumber = 1;
 
 	keys: Key[] = [];
+
+	errorMessage: string;
+	otherMessage: string;
+
+	isAskingIfWantToDelete: boolean;
+
+	awaitingResponse: boolean;
 
 	private currentReqId: string;
 
@@ -59,15 +66,16 @@ export class RedisContentComponent implements OnInit {
 		if (!patternToUse || patternToUse === "") {
 			patternToUse = "*";
 		}
-		let httpResp$ = this.redisCmdService.getInitialKeysWithValues(this.props.connName, patternToUse, reqId);
-		this.getKeysFromObs(httpResp$, true, reqId);
+		this.awaitingResponse = true;
+		let httpResp$ = this.redisCmdService.getInitialKeysWithValues(this.props.connName, patternToUse);
+		this.getKeysFromObs(httpResp$, true, patternToUse, reqId);
 	}
-	getMoreKeysFromScanId(scanId: string, reqId: string): void {
-		let httpResp$ = this.redisCmdService.getMoreKeysWithValues(scanId, reqId);
-		this.getKeysFromObs(httpResp$, false, reqId);
+	getMoreKeysFromScanId(scanId: string, originalPattern: string, reqId: string): void {
+		let httpResp$ = this.redisCmdService.getMoreKeysWithValues(scanId);
+		this.getKeysFromObs(httpResp$, false, originalPattern, reqId);
 	}
 	private getKeysFromObs(httpResp$: Observable<HttpResponse<KeysResponse>>, isInitialRequest: boolean,
-			originalReqId: string): void {
+			originalPattern: string, originalReqId: string): void {
 		handleResponse<KeysResponse>(httpResp$,
 			(keysResp: KeysResponse) => {
 				// First, check to see if the current reqId matches the original. If not, do nothing further.
@@ -77,19 +85,32 @@ export class RedisContentComponent implements OnInit {
 				// Handle the response
 				if (isInitialRequest) {
 					this.setPage(1);
+					this.awaitingResponse = false;
+					this.clearMessages();
 				}
-				for (let key of keysResp.keys) {
-					this.keys.push(this.getPreparedKey(key));
+				if (keysResp.keys) {
+					for (let key of keysResp.keys) {
+						this.keys.push(this.getPreparedKey(key));
+					}
 				}
-				if (keysResp.status === 202) {
-					this.getMoreKeysFromScanId(getScanId(keysResp), originalReqId);
+				if (this.keysListIsNotEmpty()) {
+					if (keysResp.status === 202) {
+						this.getMoreKeysFromScanId(getScanId(keysResp), originalPattern, originalReqId);
+					}
+				} else {
+					if (isInitialRequest) {
+						this.otherMessage = "There were no keys matching pattern " + originalPattern;
+					}
 				}
 			}, (errResp: ErrorResponse) => {
 				// First, check to see if the current reqId matches the original. If not, do nothing further.
 				if (this.currentReqId !== originalReqId) {
 					return;
 				}
-				console.log("Error getting keys: " + errResp.message);
+				this.clearMessages();
+				this.awaitingResponse = false;
+				this.errorMessage = "Error getting keys: " + errResp.message;
+				console.log(this.errorMessage);
 			});
 	}
 	private getPreparedKey(key: Key): Key {
@@ -107,6 +128,47 @@ export class RedisContentComponent implements OnInit {
 			key.val = hashKvs;
 		}
 		return Object.assign(new Key(), key);
+	}
+
+	askIfWantToDelete(): void {
+		this.isAskingIfWantToDelete = true;
+	}
+	closeDeleteModal = () => {
+		this.isAskingIfWantToDelete = false;
+	}
+	deleteKeys(): void {
+		this.isAskingIfWantToDelete = false;
+		let reqId = getRandomString();
+		let patternToUse = this.pattern;
+		if (!patternToUse || patternToUse === "") {
+			patternToUse = "*";
+		}
+		this.currentReqId = reqId;
+		this.awaitingResponse = true;
+		handleResponse<DeleteResponse>(this.redisCmdService.deleteKeysWithPattern(this.props.connName, patternToUse),
+			(delResp: DeleteResponse) => {
+				// First, check to see if the current reqId matches the original. If not, do nothing further.
+				if (this.currentReqId !== reqId) {
+					return;
+				}
+				this.awaitingResponse = false;
+				this.clearMessages();
+				this.keys = [];
+				if (delResp.deletedAllKeys) {
+					this.otherMessage = "Deleted all keys.";
+				} else {
+					this.otherMessage = "Deleted " + delResp.count + " keys.";
+				}
+			}, (errResp: ErrorResponse) => {
+				// First, check to see if the current reqId matches the original. If not, do nothing further.
+				if (this.currentReqId !== reqId) {
+					return;
+				}
+				this.clearMessages();
+				this.awaitingResponse = false;
+				this.errorMessage = "Error deleting keys: " + errResp.message;
+				console.log(this.errorMessage);
+			});
 	}
 
 	getKeysOnCurrentPage(): Key[] {
@@ -174,6 +236,15 @@ export class RedisContentComponent implements OnInit {
 		if (event.keyCode == 13 && !isNaN(this.pageInputNumber)) {
 			this.currentPage = this.pageInputNumber;
 		}
+	}
+
+	keysListIsNotEmpty(): boolean {
+		return this.keys && this.keys.length > 0;
+	}
+
+	private clearMessages(): void {
+		this.otherMessage = null;
+		this.errorMessage = null;
 	}
 
 	openKey(key: Key): void {

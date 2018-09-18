@@ -13,6 +13,7 @@ import { CountHolder, handleResponse } from '../util';
 export class ConnectionsPanelComponent implements OnInit {
 
 	@Output() selectConnEmitter = new EventEmitter<string>();
+	@Output() numOfConnectionsEmitter = new EventEmitter<number>();
 
 	connections: Connection[] = [];
 
@@ -32,8 +33,10 @@ export class ConnectionsPanelComponent implements OnInit {
 				for (let respConn of connsResp.connections) {
 					this.connections.push(Object.assign(new Connection(), respConn));
 				}
+				this.numOfConnectionsEmitter.emit(this.connections.length);
 			}, (errResp: ErrorResponse) => {
 				console.log("Error getting connections list: " + errResp.message);
+				this.numOfConnectionsEmitter.emit(this.connections.length);
 			});
 	}
 
@@ -75,6 +78,7 @@ export class ConnectionsPanelComponent implements OnInit {
 
 	saveConn(conn: Connection): void {
 		this.connections.push(conn);
+		this.numOfConnectionsEmitter.emit(this.connections.length);
 	}
 	
 	updateConn(conn: Connection): void {
@@ -113,6 +117,7 @@ export class ConnectionsPanelComponent implements OnInit {
 			(resp: HttpResultContainer) => {
 				this.connections.splice(i, 1);
 				this.closeRemoveConnModal();
+				this.numOfConnectionsEmitter.emit(this.connections.length);
 			}, (errResp: ErrorResponse) => {
 				console.log("Error removing connection " + conn.getDisplayName() + ": " + errResp.message);
 				this.closeRemoveConnModal();
