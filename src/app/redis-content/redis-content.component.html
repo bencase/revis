@@ -1,7 +1,29 @@
+<span *ngIf="isAskingIfWantToDelete">
+	<centered-modal [close]="closeDeleteModal" [title]="'Delete Keys'">
+		<div *ngIf="!pattern || pattern === '*'" class="warningTextContainer">
+			<p>This action will delete ALL keys.</p>
+			<p>If you only want to delete keys based on a pattern, click 'Cancel' and define a pattern before deleting.</p>
+			<p>Do you want to continue?</p>
+		</div>
+		<div *ngIf="!(!pattern || pattern === '*')" class="warningTextContainer">
+			<p>This will delete all keys matching the pattern:</p>
+			<p>{{pattern}}</p>
+			<p>Do you want to continue?</p>
+		</div>
+		<div>
+			<div class="clearfix">
+				<div class="buttonsContainer">
+					<button class="buttonSpacing textButton warnButton pointerCursor" (click)="deleteKeys()">Yes, Delete</button>
+					<button class="buttonSpacing textButton highlightButton pointerCursor" (click)="closeDeleteModal()">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</centered-modal>
+</span>
 <div class="scanToolbar">
 	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
 	<button class="buttonSpacing textButton highlightButton pointerCursor findKeysButton" (click)="findKeys()">Find</button>
-	<button class="buttonSpacing textButton warnButton pointerCursor" (click)="deleteKeys()">Del</button>
+	<button class="buttonSpacing textButton warnButton pointerCursor" (click)="askIfWantToDelete()">Del</button>
 	<span class="spinnerContainer">
 		<div *ngIf="awaitingResponse" class="awaitingResponseSpinner"></div>
 	</span>

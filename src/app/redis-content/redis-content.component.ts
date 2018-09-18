@@ -35,6 +35,8 @@ export class RedisContentComponent implements OnInit {
 	errorMessage: string;
 	otherMessage: string;
 
+	isAskingIfWantToDelete: boolean;
+
 	awaitingResponse: boolean;
 
 	private currentReqId: string;
@@ -128,7 +130,14 @@ export class RedisContentComponent implements OnInit {
 		return Object.assign(new Key(), key);
 	}
 
+	askIfWantToDelete(): void {
+		this.isAskingIfWantToDelete = true;
+	}
+	closeDeleteModal = () => {
+		this.isAskingIfWantToDelete = false;
+	}
 	deleteKeys(): void {
+		this.isAskingIfWantToDelete = false;
 		let reqId = getRandomString();
 		let patternToUse = this.pattern;
 		if (!patternToUse || patternToUse === "") {
