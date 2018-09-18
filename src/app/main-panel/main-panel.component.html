@@ -1,8 +1,10 @@
 <div class="col-2 connectionsColumn">
-	<connections-panel (selectConnEmitter)="selectedConnChanged($event)"></connections-panel>
+	<connections-panel (selectConnEmitter)="selectedConnChanged($event)" (numOfConnectionsEmitter)="numberOfConnectionsChanged($event)"></connections-panel>
 </div>
 <div class="col-10 tabbedViewContainer">
 	<tabbed-view>
-		<div>Select a Redis connection from the list to the left.</div>
+		<p>Welcome to ReVis!</p>
+		<p *ngIf="hasReceivedNumOfConnectionsEvent && numOfConnections === 0">Click the '+' at the top of the Connections menu to specify a connection.</p>
+		<p *ngIf="hasReceivedNumOfConnectionsEvent && numOfConnections > 0">Select a Redis connection from the list to the left.</p>
 	</tabbed-view>
 </div>

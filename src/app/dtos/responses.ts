@@ -9,6 +9,10 @@ export class HttpResultContainer {
 	public status: number;
 	public headers: HttpHeaders;
 }
+export class DeleteResponse extends HttpResultContainer {
+	public count: number;
+	public deletedAllKeys: boolean;
+}
 export class KeysResponse extends HttpResultContainer {
 	public keys: Key[];
 }

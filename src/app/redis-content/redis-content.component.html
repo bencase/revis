@@ -1,6 +1,10 @@
 <div class="scanToolbar">
 	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
 	<button class="buttonSpacing textButton highlightButton pointerCursor findKeysButton" (click)="findKeys()">Find</button>
+	<button class="buttonSpacing textButton warnButton pointerCursor" (click)="deleteKeys()">Del</button>
+	<span class="spinnerContainer">
+		<div *ngIf="awaitingResponse" class="awaitingResponseSpinner"></div>
+	</span>
 	<div class="pagesNavigator">
 		<label (click)="navigateToFirstPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
 			<i class="fas fa-angle-double-left"></i>
@@ -21,6 +25,12 @@
 	</div>
 </div>
 <div class="keysContainer">
+	<div *ngIf="errorMessage">
+		<span class="errorMessageTextDisplay">Error: {{errorMessage}}</span>
+	</div>
+	<div *ngIf="otherMessage">
+		<span>{{otherMessage}}</span>
+	</div>
 	<div class="keyLine" *ngFor="let key of getKeysOnCurrentPage()">
 		<div class="keyNameSection">
 			<div class="keyType">
