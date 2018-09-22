@@ -1,10 +1,12 @@
-$keyNameSectionWidth: 50%;
+$keyNameSectionWidth: 37%;
 $valueSectionWidth: 100% - $keyNameSectionWidth;
 
 $hundredPercent: 100%;
-$keyTypeMarginLeft: 0.75em;
-$keyTypeWidth: 6em;
-$keyNameWidth: calc(#{$hundredPercent} - (#{$keyTypeWidth} + #{$keyTypeMarginLeft}));
+$keyAttrsMarginLeft: 0.75em;
+$keyTypeLabelWidth: 2em;
+$keyExprWidth: 2em;
+$keyAttrsWidth: calc(#{$keyTypeLabelWidth} + #{$keyExprWidth} + 1px);
+$keyNameWidth: calc(#{$hundredPercent} - (#{$keyAttrsWidth} + #{$keyAttrsMarginLeft}));
 
 $singleIconButtonHeight: 1.5em;
 $singleIconButtonFontSize: 1.1em;
@@ -15,7 +17,11 @@ $appBlueG: 178;
 $appBlueB: 255;
 $appBlue: rgb(44, 178, 255);
 
+$appNavyR: 20;
+$appNavyG: 81;
+$appNavyB: 116;
 $appNavy: rgb(20, 81, 116);
+$appNavyOpaque: rgba($appNavyR, $appNavyG, $appNavyB, 1);
 
 $scrollbarWidth: 12px;
 $scrollbarThinWidth: 6px;

@@ -40,6 +40,14 @@
 	display: inline-block;
 	float: right;
 }
+.pageNumberInput {
+	width: 2em;
+}
+.pageNumberInput::-webkit-inner-spin-button,
+.pageNumberInput::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 .keyCount{
 	margin-left: 0.5em;
 	margin-right: 0.5em;
@@ -68,14 +76,35 @@
 	width: $valueSectionWidth;
 }
 
-.keyType {
+.keyAttrs {
 	display: inline-block;
-	opacity: 0.67;
 	font-size: 0.8em;
-	width: $keyTypeWidth;
-	margin-left: $keyTypeMarginLeft;
+	width: $keyAttrsWidth;
+	margin-left: $keyAttrsMarginLeft;
 	margin-top: 0.3em;
 	vertical-align: top;
+}
+.keyAttr {
+	display: inline-block;
+	text-align: center;
+}
+.keyTypeTextContainer {
+	width: $keyTypeLabelWidth;
+}
+.keyTypeText {
+	opacity: 0.67;
+	padding: 4px;
+}
+.keyExprContainer {
+	width: $keyExprWidth;
+	position: relative;
+}
+.keyExpr {
+	position: relative;
+	bottom: 1px;
+	right: 1px;
+	opacity: 0.67;
+	padding: 4px;
 }
 .keyName {
 	display: inline-block;
@@ -106,13 +135,16 @@
 	word-break: break-all;
 }
 
+.basicStringVal {
+	width: max-content;
+}
+.listItem {
+	width: max-content;
+}
 .redisContentTable {
-	//width: 100%;
 }
 .tableFirstCell {
 	vertical-align: top;
-	//width: 1%;
-	//white-space: nowrap;
 }
 .tableLastCell {
 	vertical-align: top;
@@ -122,4 +154,16 @@
 }
 .hoverHighlight:hover {
 	background-color: rgba(0, 0, 0, 0.03);
+}
+
+
+.generalTooltip {
+	background: $appNavyOpaque;
+	color: rgba(255, 255, 255, 1);
+	position: fixed;
+	opacity: 1;
+	font-size: 0.8em;
+	padding: 5px;
+	border-radius: 3px;
+	z-index: 1;
 }

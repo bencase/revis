@@ -3,7 +3,7 @@
 </div>
 <div class="col-10 tabbedViewContainer">
 	<tabbed-view>
-		<p>Welcome to ReVis!</p>
+		<p>Welcome to {{appName}}!</p>
 		<p *ngIf="hasReceivedNumOfConnectionsEvent && numOfConnections === 0">Click the '+' at the top of the Connections menu to specify a connection.</p>
 		<p *ngIf="hasReceivedNumOfConnectionsEvent && numOfConnections > 0">Select a Redis connection from the list to the left.</p>
 	</tabbed-view>
