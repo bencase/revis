@@ -3,6 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TabProps } from '../objects';
 import { TabbedViewComponent } from '../tabbed-view/tabbed-view.component';
 
+import { applicationName } from '../config/config';
+
 @Component({
   selector: 'main-panel',
   templateUrl: './main-panel.component.html',
@@ -11,6 +13,8 @@ import { TabbedViewComponent } from '../tabbed-view/tabbed-view.component';
 export class MainPanelComponent implements OnInit {
 
 	@ViewChild(TabbedViewComponent) tabbedView: TabbedViewComponent;
+
+	appName = applicationName;
 
 	selectedConn: string;
 	hasReceivedNumOfConnectionsEvent: boolean;

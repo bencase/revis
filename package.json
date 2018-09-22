@@ -27,6 +27,8 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
+    "electron-context-menu": "^0.10.0",
+    "moment": "^2.22.2",
     "ng-click-outside": "^4.0.0",
     "ngx-electron": "^1.0.4",
     "portastic": "^1.0.1",

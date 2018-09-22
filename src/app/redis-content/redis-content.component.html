@@ -1,12 +1,13 @@
+<div class="generalTooltip" [style.bottom]="tooltipBottom" [style.left]="tooltipLeft" [style.visibility]="tooltipVisibility">{{tooltipText}}</div>
 <span *ngIf="isAskingIfWantToDelete">
 	<centered-modal [close]="closeDeleteModal" [title]="'Delete Keys'">
 		<div *ngIf="!pattern || pattern === '*'" class="warningTextContainer">
-			<p>This action will delete ALL keys.</p>
+			<p>This action will delete ALL keys (even those not loaded in {{appName}}).</p>
 			<p>If you only want to delete keys based on a pattern, click 'Cancel' and define a pattern before deleting.</p>
 			<p>Do you want to continue?</p>
 		</div>
 		<div *ngIf="!(!pattern || pattern === '*')" class="warningTextContainer">
-			<p>This will delete all keys matching the pattern:</p>
+			<p>This will delete all keys (even those not loaded in {{appName}}) matching the pattern:</p>
 			<p>{{pattern}}</p>
 			<p>Do you want to continue?</p>
 		</div>
@@ -34,7 +35,7 @@
 		<label (click)="navigateToPreviousPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: leftArrowIsActive(), fadedOption: !leftArrowIsActive()}">
 			<i class="fas fa-angle-left"></i>
 		</label>
-		<input size="3" class="pageNavMargin" [(ngModel)]="pageInputNumber" (keydown)="pageSelectInputKeydown($event)">
+		<input size="3" type="number" class="pageNumberInput pageNavMargin" [(ngModel)]="pageInputNumber" (keydown)="pageSelectInputKeydown($event)">
 		<label (click)="navigateToNextPage()" class="pageNavMargin unselectable" [ngClass]="{pointerCursor: rightArrowIsActive(), fadedOption: !rightArrowIsActive()}">
 			<i class="fas fa-angle-right"></i>
 		</label>
@@ -53,46 +54,51 @@
 	<div *ngIf="otherMessage">
 		<span>{{otherMessage}}</span>
 	</div>
-	<div class="keyLine" *ngFor="let key of getKeysOnCurrentPage()">
+	<div class="keyLine pointerCursor" *ngFor="let key of getKeysOnCurrentPage()" (mousedown)="onKeyMousedown(key)" (mouseup)="onKeyMouseup(key)">
 		<div class="keyNameSection">
-			<div class="keyType">
+			<div class="keyAttrs">
 				<div class="vCenterTextContent">
-					<label class="keyTypeText" [style.color]="getTypeTextColor(key)">
-						{{key.getTypeForDisplay()}}
-					</label>
+					<div class="keyAttr keyTypeTextContainer unselectable" [style.color]="getTypeTextColor(key)" (mouseenter)="mouseenterKeyType($event, key)" (mouseleave)="resetTooltip(key)">
+						<span class="keyTypeText">{{key.getTypeForDisplay()}}</span>
+					</div>
+					<div class="keyAttr keyExprContainer unselectable" (mouseenter)="mouseenterExpr($event, key)" (mouseleave)="resetTooltip(key)">
+						<span class="keyExpr" *ngIf="key.expAt > 0"><i class="far fa-clock"></i></span>
+					</div>
 				</div>
 			</div>
-			<div class="keyName" [class.ellipsisOverflow]="!key.isOpen" [class.wrap]="key.isOpen" [class.noWrap]="!key.isOpen">{{key.key}}</div>
+			<div class="keyName" [class.ellipsisOverflow]="!key.isOpen" [class.wrap]="key.isOpen" [class.noWrap]="!key.isOpen">
+				<span class="basicStringVal textCursor">{{key.key}}</span>
+			</div>
 		</div>
 		<div class="valueSection">
 			<div *ngIf="!key.isOpen">
-				<div class="valueButtonContainer">
+				<!--<div class="valueButtonContainer">
 					<button class="pointerCursor" (click)="openKey(key)">
 						<i class="fas fa-angle-down"></i>
 					</button>
-				</div>
+				</div>-->
 				<div class="valueText ellipsisOverflow noWrap">
-					{{key.getCompactValueDisplay()}}
+					<span class="basicStringVal textCursor">{{key.getCompactValueDisplay()}}</span>
 				</div>
 			</div>
 			<div *ngIf="key.isOpen">
-				<div class="valueButtonContainer">
+				<!--<div class="valueButtonContainer">
 					<button class="pointerCursor" (click)="closeKey(key)">
 						<i class="fas fa-angle-up"></i>
 					</button>
-				</div>
+				</div>-->
 				<div class="valueText wrap">
-					<span *ngIf="keyTypeIsString(key)">{{key.val}}</span>
+					<span class="basicStringVal textCursor" *ngIf="keyTypeIsString(key)">{{key.val}}</span>
 					<span *ngIf="key.type === keyTypeList || key.type === keyTypeSet">
-						<div class="hoverHighlight" *ngFor="let str of key.val">{{str}}</div>
+						<div class="listItem hoverHighlight textCursor" *ngFor="let str of key.val">{{str}}</div>
 					</span>
 					<span *ngIf="key.type === keyTypeZset">
 						<table class="redisContentTable">
 							<tr class="hoverHighlight" *ngFor="let zsetVal of key.val">
 								<td class="tableFirstCell">
-									<span class="tableCellMargin">{{zsetVal.score}}</span>
+									<span class="tableCellMargin textCursor">{{zsetVal.score}}</span>
 								</td>
-								<td class="tableLastCell">{{zsetVal.zval}}</td>
+								<td class="tableLastCell textCursor">{{zsetVal.zval}}</td>
 							</tr>
 						</table>
 					</span>
@@ -100,9 +106,9 @@
 						<table class="redisContentTable">
 							<tr class="hoverHighlight" *ngFor="let hashVal of key.val">
 								<td class="tableFirstCell">
-									<span class="tableCellMargin">{{hashVal.hkey}}</span>
+									<span class="tableCellMargin textCursor">{{hashVal.hkey}}</span>
 								</td>
-								<td class="tableLastCell">{{hashVal.hval}}</td>
+								<td class="tableLastCell textCursor">{{hashVal.hval}}</td>
 							</tr>
 						</table>
 					</span>

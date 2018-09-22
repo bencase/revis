@@ -4,6 +4,8 @@ import { Connection } from '../connection';
 
 import { Header, KeyType } from '../config/config';
 
+import * as moment from 'moment';
+
 export class HttpResultContainer {
 	public error: ErrorResponse;
 	public status: number;
@@ -20,9 +22,13 @@ export class Key {
 	public key: string;
 	public val: string|string[]|ZsetVal[]|HashVal[];
 	public type: string;
+	public expAt: number;
+
 	public compactDisplayStr: string;
 
 	public isOpen: boolean;
+
+	private expAtStr: string;
 
 	public getCompactValueDisplay(): string {
 		if (this.compactDisplayStr) {
@@ -49,10 +55,33 @@ export class Key {
 	}
 
 	public getTypeForDisplay(): string {
-		if (!this.type) {
-			return "STRING";
+		switch (this.type) {
+			case KeyType.List : return "L";
+			case KeyType.Set : return "SE";
+			case KeyType.Zset : return "Z";
+			case KeyType.Hash : return "H";
+			default : return "ST";
 		}
-		return this.type.toUpperCase();
+	}
+	public getFullType(): string {
+		switch (this.type) {
+			case KeyType.List : return "List";
+			case KeyType.Set : return "Set";
+			case KeyType.Zset : return "Sorted set (Zset)";
+			case KeyType.Hash : return "Hash";
+			default : return "String";
+		}
+	}
+
+	public getLocalExprDate(): string {
+		if (this.expAt <= 0) {
+			return "";
+		}
+		if (this.expAtStr) {
+			return this.expAtStr;
+		}
+		let expAtMmt: moment.Moment = moment.unix(this.expAt);
+		return 'Expires ' + expAtMmt.format('MMMM Do YYYY, H:mm:ss');
 	}
 }
 export class ZsetVal {

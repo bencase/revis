@@ -79,6 +79,7 @@ export class ConnectionsPanelComponent implements OnInit {
 	saveConn(conn: Connection): void {
 		this.connections.push(conn);
 		this.numOfConnectionsEmitter.emit(this.connections.length);
+		this.selectConn(conn);
 	}
 	
 	updateConn(conn: Connection): void {

@@ -7,7 +7,7 @@ import { TabProps } from '../objects';
 import { RedisCmdService } from '../services/redis-cmd.service';
 import { DeleteResponse, ErrorResponse, HashVal, Key, KeysResponse, ZsetVal, getScanId } from '../dtos/responses';
 import { getRandomString, handleResponse } from '../util';
-import { KeyType } from '../config/config';
+import { applicationName, KeyType } from '../config/config';
 
 @Component({
   selector: 'redis-content',
@@ -25,6 +25,8 @@ export class RedisContentComponent implements OnInit {
 
 	@Input() props: TabProps;
 
+	appName = applicationName;
+
 	currentPage = 1;
 	pattern: string;
 
@@ -39,7 +41,16 @@ export class RedisContentComponent implements OnInit {
 
 	awaitingResponse: boolean;
 
+	tooltipText: string;
+	tooltipBottom: string;
+	tooltipLeft: string;
+	tooltipVisibility = "hidden";
+	tooltipRandomNumber = -1;
+	tooltipDelayMilliseconds = 500;
+
 	private currentReqId: string;
+
+	private mousedownOverKey: Key;
 
 	constructor(private redisCmdService : RedisCmdService) { }
 
@@ -247,11 +258,68 @@ export class RedisContentComponent implements OnInit {
 		this.errorMessage = null;
 	}
 
+	onKeyMousedown(key: Key): void {
+		this.mousedownOverKey = key;
+		setTimeout(() => {
+			if (this.mousedownOverKey === key) {
+				this.mousedownOverKey = null;
+			}
+		}, 200);
+	}
+	onKeyMouseup(key: Key): void {
+		let selection = window.getSelection();
+		if (this.mousedownOverKey === key && !selection.toString()) {
+			key.isOpen = !key.isOpen;
+			this.mousedownOverKey = null;
+		}
+	}
+
 	openKey(key: Key): void {
 		key.isOpen = true;
 	}
 	closeKey(key: Key): void {
 		key.isOpen = false;
+	}
+
+	mouseenterExpr(event, key: Key): void {
+		if (key.expAt <= 0) {
+			return;
+		}
+		let randNum = this.setTooltipRandomNumber();
+		setTimeout(() => {
+			if (this.tooltipRandomNumber === randNum) {
+				this.tooltipText = key.getLocalExprDate();
+				this.setTooltipPositionAndVisibility(event);
+			}
+		}, this.tooltipDelayMilliseconds);
+	}
+	mouseenterKeyType(event, key: Key): void {
+		let randNum = this.setTooltipRandomNumber();
+		setTimeout(() => {
+			if (this.tooltipRandomNumber === randNum) {
+				this.tooltipText = 'Key type: ' + key.getFullType();
+				this.setTooltipPositionAndVisibility(event);
+			}
+		}, this.tooltipDelayMilliseconds);
+	}
+	private setTooltipRandomNumber(): number {
+		let randNum = Math.random();
+		this.tooltipRandomNumber = randNum;
+		return randNum;
+	}
+	private setTooltipPositionAndVisibility(event): void {
+		let targetRect = event.target.getBoundingClientRect();
+		this.tooltipBottom = (window.innerHeight - targetRect.top) + 'px';
+		this.tooltipLeft = targetRect.left + 'px';
+		this.tooltipVisibility = "visible";
+	}
+	resetTooltip(key: Key): void {
+		if (key.expAt <= 0) {
+			return;
+		}
+		this.tooltipRandomNumber = -1;
+		this.tooltipText = null;
+		this.tooltipVisibility = "hidden";
 	}
 
 	keyTypeIsString(key: Key): boolean {

@@ -10,3 +10,4 @@ export enum Header {
 	Pattern = "pattern",
 	ScanId = "scanid"
 }
+export var applicationName = "ReVis";

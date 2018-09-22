@@ -5,6 +5,8 @@ let portastic = require('portastic');
 url = require('url');
 path = require('path');
 
+require('electron-context-menu')();
+
 let win;
 let serverProc;
 
