@@ -1,3 +1,6 @@
+$connActionsButtonWidth: 1em;
+$connRemainingWidth: calc(100% - #{$connActionsButtonWidth});
+
 $keyNameSectionWidth: 37%;
 $valueSectionWidth: 100% - $keyNameSectionWidth;
 

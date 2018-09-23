@@ -21,6 +21,13 @@
 	padding-right: $fontHeight * 0.31;
 }
 
+@mixin ellipsisVButtonPadding($fontHeight: $singleIconButtonFontSize, $totalHeight: $fontHeight * $singleIconButtonRatioOfHeightToFontSize) {
+	padding-top: ($totalHeight - $fontHeight) * 0.6;
+	padding-bottom: ($totalHeight - $fontHeight) * 0.4;
+	padding-left: $fontHeight * 0.31;
+	padding-right: $fontHeight * 0.31;
+}
+
 @mixin cssSpinner($top: 0.5em, $left: 1.19em, $width: 20px, $height: 20px) {
 	content: '';
 	position: absolute;

@@ -16,7 +16,7 @@
 		<div class="pointerCursor unselectable connectionRow" *ngFor="let connection of connections; let i = index" (click)="onConnDblClick(connection)">
 			<div class="connTextOuter">
 				<div class="connVAlignOuter">
-					<div class="connVAlignInner">
+					<div class="connVAlignInner connEllipsis">
 						{{connection.getDisplayName()}}
 					</div>
 				</div>
@@ -24,40 +24,51 @@
 			<div class="connActionsButtonContainer">
 				<div class="connVAlignOuter">
 					<div class="connVAlignInner">
-						<span>
-							<button class="connActionsButton singleIconButton cogButton highlightButton pointerCursor" (click)="setConnAsOpenForEditing(connection)">
+						<span class="connActionsInnerContainer">
+							<button class="connActionsButton singleIconButton ellipsisVButton highlightButton pointerCursor" (click)="setConnActionDropdownOpen(connection)">
+								<i class="fas fa-ellipsis-v"></i>
+							</button>
+							<div *ngIf="connWithActionDropdownOpen === connection" class="connActionsMenu" (clickOutside)="closeConnActionDropdown()"  [delayClickOutsideInit]="true">
+								<div class="connActionButtonContainerMarginBottom">
+									<button class="textButton highlightButton pointerCursor" (click)="setConnAsOpenForEditing(connection)">Settings</button>
+								</div>
+								<div>
+									<button class="textButton warnButton pointerCursor" (click)="setConnAsOpenForEditing(connection)">Delete</button>
+								</div>
+							</div>
+							<!--<button class="connActionsButton singleIconButton cogButton highlightButton pointerCursor" (click)="setConnAsOpenForEditing(connection)">
 								<i class="fas fa-cog"></i>
 							</button>
-							<button class="connActionsButton singleIconButton timesButton warnButton pointerCursor" (click)="openRemoveConnModal(connection)">
+							<button class="connActionsButton singleIconButton timesButton warnButton pointerCursor" (click)="openRemoveConnModal(i, connection)">
 								<i class="fas fa-times"></i>
-							</button>
+							</button>-->
 						</span>
 					</div>
 				</div>
 			</div>
-			<span *ngIf="connOpenedForEditing === connection">
-				<centered-modal [close]="closeConnPropsModal" [title]="'Update Connection'">
-					<conn-props-panel [close]="closeConnPropsModal"
-						[name]="connection.name"
-						[host]="connection.host"
-						[port]="connection.port"
-						[usesPassword]="connUsesPassword(connection)"
-						[password]="connection.password"
-						[db]="connection.db"
-						(connEmitter)="updateConn($event)"></conn-props-panel>
-				</centered-modal>
-			</span>
-			<span *ngIf="connForWhichRemovalPending === connection">
-				<centered-modal [close]="closeRemoveConnModal" [title]="'Remove Connection'">
-					<div class="unselectable">Are you sure you want to remove {{connection.getDisplayName()}}?</div>
-					<div class="clearfix">
-						<div class="buttonsContainer">
-							<button class="buttonSpacing textButton warnButton pointerCursor" (click)="removeConn(i)">Yes, remove</button>
-							<button class="buttonSpacing textButton highlightButton pointerCursor" (click)="closeRemoveConnModal()">Cancel</button>
-						</div>
-					</div>
-				</centered-modal>
-			</span>
 		</div>
 	</div>
 </div>
+<span *ngIf="connOpenedForEditing">
+	<centered-modal [close]="closeConnPropsModal" [title]="'Update Connection'">
+		<conn-props-panel [close]="closeConnPropsModal"
+			[name]="connOpenedForEditing.name"
+			[host]="connOpenedForEditing.host"
+			[port]="connOpenedForEditing.port"
+			[usesPassword]="connUsesPassword(connOpenedForEditing)"
+			[password]="connOpenedForEditing.password"
+			[db]="connOpenedForEditing.db"
+			(connEmitter)="updateConn($event)"></conn-props-panel>
+	</centered-modal>
+</span>
+<span *ngIf="connForWhichRemovalPending">
+	<centered-modal [close]="closeRemoveConnModal" [title]="'Remove Connection'">
+		<div class="unselectable">Are you sure you want to remove {{connForWhichRemovalPending.getDisplayName()}}?</div>
+		<div class="clearfix">
+			<div class="buttonsContainer">
+				<button class="buttonSpacing textButton warnButton pointerCursor" (click)="removeConn(indexOfConnForWhichRemovalPending)">Yes, remove</button>
+				<button class="buttonSpacing textButton highlightButton pointerCursor" (click)="closeRemoveConnModal()">Cancel</button>
+			</div>
+		</div>
+	</centered-modal>
+</span>

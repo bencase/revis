@@ -23,8 +23,8 @@
 </span>
 <div class="scanToolbar">
 	<input class="liteInput patternInput" size="40" placeholder="Type a pattern to match against keys" [(ngModel)]="pattern" (keydown)="inputKeydown($event)">
-	<button class="buttonSpacing textButton highlightButton pointerCursor findKeysButton" (click)="findKeys()">Find</button>
-	<button class="buttonSpacing textButton warnButton pointerCursor" (click)="askIfWantToDelete()">Del</button>
+	<button class="buttonSpacing textButton highlightButton pointerCursor unselectable findKeysButton" (click)="findKeys()">Find</button>
+	<button class="buttonSpacing textButton warnButton unselectable pointerCursor" (click)="askIfWantToDelete()">Del</button>
 	<span class="spinnerContainer">
 		<div *ngIf="awaitingResponse" class="awaitingResponseSpinner"></div>
 	</span>
@@ -90,7 +90,13 @@
 				<div class="valueText wrap">
 					<span class="basicStringVal textCursor" *ngIf="keyTypeIsString(key)">{{key.val}}</span>
 					<span *ngIf="key.type === keyTypeList || key.type === keyTypeSet">
-						<div class="listItem hoverHighlight textCursor" *ngFor="let str of key.val">{{str}}</div>
+						<table class="redisContentTable">
+							<tr class="hoverHighlight" *ngFor="let str of key.val">
+								<td class="tableFirstCell">
+									<span class="listItem textCursor">{{str}}</span>
+								</td>
+							</tr>
+						</table>
 					</span>
 					<span *ngIf="key.type === keyTypeZset">
 						<table class="redisContentTable">
