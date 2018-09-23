@@ -19,8 +19,10 @@ export class ConnectionsPanelComponent implements OnInit {
 
 	propsModalIsOpen: boolean;
 
+	connWithActionDropdownOpen: Connection;
 	connOpenedForEditing: Connection;
 	connForWhichRemovalPending: Connection;
+	indexOfConnForWhichRemovalPending: number;
 
 	private clickCounter: CountHolder = new CountHolder();
 	private timeoutHolder = {};
@@ -64,8 +66,15 @@ export class ConnectionsPanelComponent implements OnInit {
 		}
 	}
 
+	setConnActionDropdownOpen(conn: Connection): void {
+		this.connWithActionDropdownOpen = conn;
+	}
+	closeConnActionDropdown(): void {
+		this.connWithActionDropdownOpen = null;
+	}
+
 	openConnPropertiesPanelForAdding(): void {
-		console.log("conns: " + JSON.stringify(this.connections));
+		this.closeConnActionDropdown();
 		this.propsModalIsOpen = true;
 	}
 	closeConnPropsModal = () => {
@@ -73,6 +82,7 @@ export class ConnectionsPanelComponent implements OnInit {
 		this.connOpenedForEditing = null;
 	}
 	setConnAsOpenForEditing(conn: Connection): void {
+		this.closeConnActionDropdown();
 		this.connOpenedForEditing = conn;
 	}
 
@@ -106,7 +116,9 @@ export class ConnectionsPanelComponent implements OnInit {
 		return false;
 	}
 
-	openRemoveConnModal(conn: Connection): void {
+	openRemoveConnModal(i: number, conn: Connection): void {
+		this.closeConnActionDropdown();
+		this.indexOfConnForWhichRemovalPending = i;
 		this.connForWhichRemovalPending = conn;
 	}
 	closeRemoveConnModal = () => {

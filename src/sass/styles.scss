@@ -102,6 +102,9 @@ table {
 .timesButton {
 	@include timesButtonPadding();
 }
+.ellipsisVButton {
+	@include ellipsisVButtonPadding();
+}
 
 button {
 	border: none;

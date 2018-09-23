@@ -11,9 +11,9 @@
 		<label>Port: </label>
 		<input class="liteInput marginLeft" (input)="connFieldChanged()" [(ngModel)]="port">
 	</div>
-	<div class="marginTop">
-		<input type="checkbox" (input)="connFieldChanged()" [(ngModel)]="usesPassword">
-		<label class="marginLeft">Has Password</label>
+	<div class="marginTop pointerCursor" (click)="toggleUsesPassword()">
+		<input class="pointerCursor" type="checkbox" (input)="connFieldChanged()" [(ngModel)]="usesPassword">
+		<label class="marginLeft pointerCursor">Has Password</label>
 	</div>
 	<div class="marginTop" [ngClass]="{'fadedOption': !usesPassword}">
 		<label>Password: </label>

@@ -6,7 +6,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ElectronService } from 'ngx-electron';
 
-import { RemoveConnectionRequest } from '../dtos/requests';
+import { ConnUpsert, RemoveConnectionRequest, UpsertConnectionsRequest } from '../dtos/requests';
 import { DeleteResponse, HttpResultContainer, KeysResponse } from '../dtos/responses';
 import { Connection, ConnectionsContainer } from '../connection';
 import { Header } from '../config/config';
@@ -54,9 +54,14 @@ export class RedisCmdService {
 			.pipe(catchError(this.handleError));
 	}
 
-	public upsertConnections(connections: Connection[]): Observable<HttpResponse<HttpResultContainer>> {
-		let upsertReq = new ConnectionsContainer();
-		upsertReq.connections = connections;
+	public upsertConnection(connection: Connection, replace: string): Observable<HttpResponse<HttpResultContainer>> {
+		let upsertReq = new UpsertConnectionsRequest();
+		let connUpsert = new ConnUpsert();
+		connUpsert.newConn = connection;
+		if (replace) {
+			connUpsert.oldConnName = replace;
+		}
+		upsertReq.connections = [connUpsert];
 		return this.httpClient.post<HttpResultContainer>(this.getPathPrefix() + "/connections", upsertReq, {observe: "response"})
 			.pipe(catchError(this.handleError));
 	}
