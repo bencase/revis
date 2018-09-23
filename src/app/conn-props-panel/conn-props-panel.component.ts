@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
-import { Connection } from '../connection';
+import { getDisplayName, Connection } from '../connection';
 import { HttpResultContainer, ErrorResponse } from '../dtos/responses';
 import { RedisCmdService } from '../services/redis-cmd.service';
-import { getRandomString, handleResponse } from '../util';
+import { handleResponse } from '../util';
 
 @Component({
   selector: 'conn-props-panel',
@@ -13,8 +13,8 @@ import { getRandomString, handleResponse } from '../util';
 export class ConnPropsPanelComponent implements OnInit {
 
 	@Input() name: string;
-	@Input() host: string = "localhost";
-	@Input() port: string = "6379";
+	@Input() host: string;
+	@Input() port: string;
 	@Input() usesPassword: boolean;
 	@Input() password: string;
 	@Input() db: number = 0;
@@ -31,11 +31,20 @@ export class ConnPropsPanelComponent implements OnInit {
 	isAwaitingResultsTest: boolean;
 	isAwaitingResultsSave: boolean;
 
-	private currentReqId: string;
+	private originalName: string;
 
 	constructor(private redisCmdService : RedisCmdService) { }
 
 	ngOnInit() {
+		if (this.host && this.port) {
+			this.originalName = getDisplayName(this.name, this.host, this.port, this.db);
+		}
+		if (!this.host) {
+			this.host = "localhost";
+		}
+		if (!this.port) {
+			this.port = "6379";
+		}
 	}
 
 	ngAfterViewInit() {
@@ -66,7 +75,6 @@ export class ConnPropsPanelComponent implements OnInit {
 		this.hasPassedTest = false;
 		this.isAwaitingResults = true;
 		this.isAwaitingResultsTest = true;
-		this.currentReqId = getRandomString();
 		handleResponse<HttpResultContainer>(this.redisCmdService.testConnection(conn), () => {
 			this.onSuccessfulTest();
 		}, (errResp: ErrorResponse) => {
@@ -106,10 +114,8 @@ export class ConnPropsPanelComponent implements OnInit {
 
 		this.isAwaitingResults = true;
 		this.isAwaitingResultsSave = true;
-		this.currentReqId = getRandomString();
 		handleResponse<HttpResultContainer>(this.redisCmdService.testConnection(conn), () => {
-			let connsList = [conn];
-			handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnections(connsList), () => {
+			handleResponse<HttpResultContainer>(this.redisCmdService.upsertConnection(conn, this.originalName), () => {
 				this.onSuccessfulSaveAttempt(conn);
 			}, (errResp: ErrorResponse) => {
 				this.onFailedSaveAttempt(errResp.message);
@@ -130,6 +136,10 @@ export class ConnPropsPanelComponent implements OnInit {
 		this.isAwaitingResultsTest = false;
 		this.isAwaitingResultsSave = false;
 		this.errorMessage = message;
+	}
+
+	toggleUsesPassword(): void {
+		this.usesPassword = !this.usesPassword;
 	}
 
 	private clearMessages(): void {
