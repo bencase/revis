@@ -82,7 +82,8 @@ app.on('window-all-closed', runShutdown)
 app.on('activate', function() {
     // macOS specific close process
     if (win === null) {
-        createWindow()
+		//createWindow()
+		runStartup();
     }
 })
 
