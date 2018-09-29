@@ -41,9 +41,9 @@ function runStartup() {
 }
 
 function runShutdown() {
+	exitServerProcess();
     // on macOS specific close process
     if (process.platform !== 'darwin') {
-		exitServerProcess();
         app.quit();
     }
 }
@@ -62,7 +62,7 @@ function createWindow(port) {
     }));
 
     // uncomment below to open devtools
-	win.webContents.openDevTools()
+	//win.webContents.openDevTools()
 	
 	win.webContents.on('did-finish-load', () => {
 		win.webContents.send("port", port);
@@ -82,7 +82,8 @@ app.on('window-all-closed', runShutdown)
 app.on('activate', function() {
     // macOS specific close process
     if (win === null) {
-        createWindow()
+		//createWindow()
+		runStartup();
     }
 })
 
